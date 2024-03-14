@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Hack Nerd Mono";
+  src: url("./assets/fonts/HackNerdFontMono-Regular.ttf");
+}
+
+.without-ring {
+  @apply focus:ring-0 focus:ring-offset-0;
+}
+
