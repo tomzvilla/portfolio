@@ -8,7 +8,6 @@ import Footer from './js/components/Footer'
 function App() {
   // style={{background: 'linear-gradient(160deg, #222831, #222831 50%, #2C323C 50%, #2C323C)'}}
   // TODO:
-  // - fix background
   // - refactor my skills component
   // - make Home responsive
   // - add video playback to projects
