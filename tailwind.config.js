@@ -26,10 +26,19 @@ export default {
           "100%": {
             borderColor: "white"
           }
+        },
+        underlined: {
+          "0%": {
+            width: "0%",
+          },
+          "100%": {
+            width: "100%"
+          }
         }
       },
       animation: {
-        typing: "typing 2.2s steps(25) infinite alternate, blink .7s infinite"
+        typing: "typing 2.2s steps(25) infinite alternate, blink .7s infinite",
+        underlined: "underlined 0.5s ease-in"
       }
     },
   },

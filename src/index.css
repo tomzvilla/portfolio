@@ -7,7 +7,6 @@
   src: url("./assets/fonts/HackNerdFontMono-Regular.ttf");
 }
 
-.without-ring {
-  @apply focus:ring-0 focus:ring-offset-0;
+html {
+  scroll-behavior: smooth;
 }
-

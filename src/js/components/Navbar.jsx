@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { HashLink} from 'react-router-hash-link';
 const Navbar = () => {
   return (
     <header className='flex flex-col justify-center items-center md:space-x-20 md:place-content-around pt-[3rem] md:pt-[5rem] text-white md:flex-row'>
@@ -10,12 +11,12 @@ const Navbar = () => {
             <NavLink to={'/about'} className={'hover:text-[#4CCD99]'}>
                 <p>about</p>
             </NavLink>
-            <NavLink to={'#/projects'} className={'hover:text-[#4CCD99]'}>
+            <HashLink to={'/#projects'} className={'hover:text-[#4CCD99]'}>
                 <p>projects</p>
-            </NavLink>
-            <NavLink to={'#/contact'} className={'hover:text-[#4CCD99]'}>
+            </HashLink>
+            <HashLink to={'/#contact'} className={'hover:text-[#4CCD99]'}>
                 <p>contact</p>
-            </NavLink>
+            </HashLink>
         </nav>
     </header>
   )

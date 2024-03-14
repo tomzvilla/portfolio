@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Tech from './Tech'
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+
 const technologies = [
     {name: 'JavasScript', type: 'Programming Language'},
     {name: 'Python', type: 'Programming Language'},
@@ -21,7 +24,23 @@ const technologies = [
 
 ]
 
+const underlineVariant = {
+    visible: { width: '100%', transition: { duration: 0.5 } },
+    hidden: { width: '0%' }
+};
+
 const Skills = () => {
+
+    const control = useAnimation()
+    const [ref, inView] = useInView()
+
+    useEffect(() => {
+        if (inView) {
+            control.start("visible");
+        } else {
+            control.start("hidden");
+        }
+    }, [control, inView]);
 
 
   return (
@@ -45,7 +64,10 @@ const Skills = () => {
     //     </div>
     // </div>
     <section className='relative z-10 text-white flex flex-col items-center justify-center mx-auto max-w-[800px] lg:max-w-[1000px] mt-[20rem]'>
-        <h2 className='text-4xl mb-20'>My skills</h2>
+        <div ref={ref} className='mb-20 group'>
+            <h2 className='text-4xl font-bold'>My skills</h2>
+            <motion.div variants={underlineVariant} initial={'hidden'} animate={control} className='abslute bg-[#4CCD99] py-3 z-0 -mt-5 ml-1 group-hover:animate-underlined'></motion.div>
+        </div>
         {/* bio content */}
         <div className='flex flex-col max-w-[360px] md:max-w-[1500px] items-center md:flex-row md:items-start justify-center m-auto'>
             <div className='max-w-[360px] text-xl ml-0 lg:max-w-[400px] md:mr-10 md:ml-10'>

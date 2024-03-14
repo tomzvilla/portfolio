@@ -4,7 +4,7 @@ const ReadMore = () => {
   return (
     <>
         <div className='absolute mt-[3rem] z-0 w-full h-full overflow-hidden '>
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full z-0">
             <polygon points="100 40, 100 100, 0 60, 0 0" fill="#2C323C"/>
           </svg>
         </div>
