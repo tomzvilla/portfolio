@@ -8,15 +8,15 @@ const ProjectCard = ({project}) => {
         <div className='flex flex-col m-auto items-center justify-center z-10 mt-24 lg:flex-row xl:gap-28'>
             {/* card content */}
             <div className='flex flex-col items-center md:items-start max-w-[700px] lg:max-w-[600px] justify-center text-white space-y-7 z-10'>
-                <h3 className='text-3xl '>{project.title}</h3>
-                <ul className='flex space-x-4'>
+                <h3 className='text-3xl'>{project.title}</h3>
+                <ul className='flex space-x-4 flex-wrap [&>li]:mb-5 items-center justify-center'>
                     {project.technologies.map((t, index) => <Tech tech={t} key={index}/>)}
                 </ul>
-                <p className='text-lg pb-5 text-center md:text-left'>{project.description}</p>
+                <p className='text-md md:text-lg pb-5 text-center md:text-left'>{project.description}</p>
             </div>
             {/* card image */}
             <div className='z-10'>
-                <img className='w-[350px] rounded-xl aspect-[16/9] lg:ml-10' src={getImageUrl(project.media)} alt="" />
+                <img className='w-[300px] sm:w-[350px] rounded-xl aspect-[16/9] lg:ml-10' src={getImageUrl(project.media)} alt="" />
             </div>
         </div>
         <Link to={`/project/${project.title}`} class="relative px-10 py-4 font-bold text-[#222831] group self-center mt-10">

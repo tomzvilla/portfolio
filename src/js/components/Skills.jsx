@@ -70,7 +70,7 @@ const Skills = () => {
         </div>
         {/* bio content */}
         <div className='flex flex-col max-w-[360px] md:max-w-[1500px] items-center md:flex-row md:items-start justify-center m-auto'>
-            <div className='max-w-[360px] text-xl ml-0 lg:max-w-[400px] md:mr-10 md:ml-10'>
+            <div className='max-w-[360px] text-lg sm:text-xl ml-0 lg:max-w-[400px] md:mr-10 md:ml-10'>
                 <p>
                     Hello, I'm Tomas, FullStack Developer and Software Engineer based in Argentina. 
                     I started this coding journey back in 2019 when I joined my university, UTN - FRC.
