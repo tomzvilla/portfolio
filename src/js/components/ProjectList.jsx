@@ -9,7 +9,8 @@ const projects = [
     title: 'CienciaConecta',
     technologies: [{name: 'React'}, {name: 'Redux'}, {name: 'SASS'}, {name: 'NodeJS'}],
     description: 'An application for managing the Science and Technology Fair of the Province of Cordoba. Developed and desgined the project frontend, including role-based authentication and authorization, session and user management.',
-    media: 'CienciaConecta.png'
+    media: 'CienciaConecta.png',
+    // video: 'cienciaconecta.webp'
   },
   {
     shortname: 'wordle',
@@ -17,6 +18,13 @@ const projects = [
     technologies: [{name: 'React'}, {name: 'Redux'}, {name: 'TypeScript'}, {name: 'Tailwind'}],
     description: 'A website that allows you to play the famous game "Wordle" infinetly. Made to learn TypeScript and Tailwind. Full responsive layout with dark/light mode.',
     media: 'Wordle.png'
+  },
+  {
+    shortname: 'project-management-site',
+    title: 'The Dojo - Project Managament',
+    technologies: [{name: 'React'}, {name: 'SASS'}, {name: 'Firebase'}],
+    description: 'The Dojo is a project management website that allows you and your team to create different projects, assign them to a member of your team and set deadlines. It has a dashboard where you can filter projects, and make comments on each of them.',
+    media: 'TheDojo.png'
   }
 ];
 
@@ -39,7 +47,7 @@ const ProjectList = () => {
 
   return (
     <section className='mt-[14rem] flex flex-col items-center' id='projects'>
-        <div ref={ref} class='relative mb-20 group'>
+        <div ref={ref} className='relative mb-20 group'>
           <h2 className='relative text-4xl text-white tracking-tight font-bold z-20' > Projects </h2>
           <motion.div variants={underlineVariant} initial={'hidden'} animate={control} className='abslute bg-[#4CCD99] py-3 -mt-5 ml-1 group-hover:animate-underlined z-20'></motion.div>
         </div>

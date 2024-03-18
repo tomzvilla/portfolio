@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tech from './Tech'
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -24,6 +24,16 @@ const technologies = [
 
 ]
 
+const textVariant = {
+    hidden: {x: -50, opacity: 0},
+    visible: {x: [0, 20, -20, 0], opacity: 1},
+}
+
+const badgeVariant = {
+    hidden: {y: 40},
+    visible: {y: [-20, 10, -5, 0]},
+}
+
 const underlineVariant = {
     visible: { width: '100%', transition: { duration: 0.5 } },
     hidden: { width: '0%' }
@@ -31,59 +41,59 @@ const underlineVariant = {
 
 const Skills = () => {
 
-    const control = useAnimation()
+    const control = useAnimation();
+    const mainControls = useAnimation();
     const [ref, inView] = useInView()
+    const [refText, inViewText] = useInView({ threshold: 0.6 })
+    const [animationRan, setAnimationRan] = useState(false)
 
     useEffect(() => {
         if (inView) {
             control.start("visible");
-        } else {
+        } else if(!inView) {
             control.start("hidden");
         }
-    }, [control, inView]);
+        if(inViewText && !animationRan) {
+            mainControls.start('visible');
+            setAnimationRan(true);
+        }
+    }, [control, inView, mainControls, inViewText, animationRan]);
 
 
   return (
-    // <div className='grid grid-cols-1 items-center text-white mt-[20rem] ml-[2rem] m-auto lg:mr-auto xl:mr-[10rem]'>
-    //     <h2 className='text-4xl flex flex-wrap items-center self-center justify-center col-span-full tracking-tight font-bold z-10' >My skills </h2>
-    //     <div className='grid grid-cols-2 mt-[8rem]'>
-    //         <div className='text-2xl col-span-1 max-w-[400px] mt-3 flex items-start justify-self-end mr-[5rem] flex-wrap z-10'>
-    //             <p className='text-left font'>
-    //                 Hello, I'm Tomas, FullStack Developer and Software Engineer based in Argentina. 
-    //                 I started this coding journey back in 2019 when I joined my university, UTN - FRC.
-    //             </p>
-    //         </div>
-    //         <div className='col-span-1 z-10'>
-    //             <h3 className='text-2xl mt-2 mb-5'>Technologies</h3>
-    //             <div className='flex flex-wrap justify-center'>
-    //                 <ul className='flex justify-start flex-wrap whitespace-nowrap gap-5'>
-    //                     {technologies.map( (t, index) => <Tech tech={t} key={index} />)}
-    //                 </ul>
-    //             </div>
-    //         </div>
-    //     </div>
-    // </div>
     <section className='relative z-10 text-white flex flex-col items-center justify-center mx-auto max-w-[800px] lg:max-w-[1000px] mt-[20rem]'>
         <div ref={ref} className='mb-20 group'>
             <h2 className='text-4xl font-bold'>My skills</h2>
             <motion.div variants={underlineVariant} initial={'hidden'} animate={control} className='abslute bg-[#4CCD99] py-3 z-0 -mt-5 ml-1 group-hover:animate-underlined'></motion.div>
         </div>
         {/* bio content */}
-        <div className='flex flex-col max-w-[360px] md:max-w-[1500px] items-center md:flex-row md:items-start justify-center m-auto'>
-            <div className='max-w-[360px] text-lg sm:text-xl ml-0 lg:max-w-[400px] md:mr-10 md:ml-10'>
+        <div ref={refText} className='flex flex-col max-w-[360px] md:max-w-[1500px] items-center md:flex-row md:items-start justify-center m-auto'>
+            <motion.div 
+                className='max-w-[360px] text-lg text-center sm:text-left sm:text-xl ml-0 lg:max-w-[400px] md:mr-10 md:ml-10'
+                variants={textVariant} 
+                initial='hidden'
+                animate={mainControls}
+                transition={{ duration: 0.7 }}
+            >
                 <p>
                     Hello, I'm Tomas, FullStack Developer and Software Engineer based in Argentina. 
                     I started this coding journey back in 2019 when I joined my university, UTN - FRC.
                 </p>
-            </div>
-            <div className='flex flex-col mt-20 md:mt-0'>
+            </motion.div>
+            <motion.div 
+                className='flex flex-col mt-20 md:mt-0'
+                variants={badgeVariant} 
+                initial='hidden'
+                animate={mainControls}
+                transition={{ duration: 0.7 }}
+            >
                 {/* <h3 className='text-xl mb-1'>Technologies</h3> */}
                 <div className=''>
-                    <ul className='flex flex-row flex-wrap gap-5'>
+                    <ul className='flex flex-row flex-wrap gap-5 items-center justify-center sm:items-start sm:justify-start'>
                          {technologies.map( (t, index) => <Tech tech={t} key={index} />)}
                     </ul>
                 </div>
-            </div>
+            </motion.div>
         </div>
     </section>
   )

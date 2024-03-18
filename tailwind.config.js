@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: '#4CCD99',
+      },
       fontFamily: {
         'hack-nerd': ['"Hack Nerd Mono"', "sans-serif"],
       },

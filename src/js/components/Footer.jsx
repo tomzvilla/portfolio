@@ -1,9 +1,13 @@
 import React from 'react'
+import { HashLink as Link } from 'react-router-hash-link'
+
 
 const Footer = () => {
   return (
     <div className='flex flex-col text-white items-center justify-center'>
-        <h1 className='text-xl mb-10'>Tomas Villarreal</h1>
+        <Link to={'/#start'}>
+            <h1 className='text-xl mb-10 hover:text-[#4CCD99]'>Tomas Villarreal</h1>
+        </Link>
         <div className='flex flex-row gap-10 mb-10'>
             <a href="mailto:villarrealtomas@hotmail.com">
                 <svg className='fill-current w-[26px] h-[26px] text-white  hover:text-[#4CCD99]' xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">

@@ -2,7 +2,7 @@ import React from 'react'
 
 const SocialLinkBar = () => {
   return (
-    <div className='fixed right-[3rem] lg:right-[6rem] bottom-0 flex flex-col items-center justify-center space-y-6 z-20'>
+    <div className='fixed right-[1rem] sm:right-[3rem] lg:right-[6rem] bottom-0 flex flex-col items-center justify-center space-y-6 z-20'>
         <a href="mailto:villarrealtomas@hotmail.com">
             <svg className='fill-current w-[26px] h-[26px] text-white  hover:text-[#4CCD99]' xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.587 1.413T20 20zm8-7L4 8v10h16V8zm0-2l8-5H4zM4 8V6v12z"/>

@@ -10,3 +10,20 @@
 html {
   scroll-behavior: smooth;
 }
+
+* {
+  cursor: none;
+}
+
+/* Agrega estilos al cursor por defecto */
+#cursor-custom {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid rgb(76 205 153);
+  background-color: rgb(76 205 153);
+  border-radius: 50%;
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
