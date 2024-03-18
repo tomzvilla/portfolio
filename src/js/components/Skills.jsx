@@ -61,7 +61,7 @@ const Skills = () => {
 
 
   return (
-    <section className='relative z-10 text-white flex flex-col items-center justify-center mx-auto max-w-[800px] lg:max-w-[1000px] mt-[20rem]'>
+    <section id='about' className='relative z-10 text-white flex flex-col items-center justify-center mx-auto max-w-[800px] lg:max-w-[1000px] mt-[20rem]'>
         <div ref={ref} className='mb-20 group'>
             <h2 className='text-4xl font-bold'>My skills</h2>
             <motion.div variants={underlineVariant} initial={'hidden'} animate={control} className='abslute bg-[#4CCD99] py-3 z-0 -mt-5 ml-1 group-hover:animate-underlined'></motion.div>

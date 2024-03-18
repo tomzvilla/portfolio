@@ -9,8 +9,8 @@ const ReadMore = () => {
           </svg>
         </div>
         <div className='text-white text-lg sm:text-2xl flex flex-col items-center mt-[5rem] font-bold relative z-10'>
-          <h3><a className='text-[#4CCD99] hover:border-b hover:border-[#4CCD99] z-10' href="http://" target="_blank">Have a look at my resume</a></h3>
-          <h4 className='mt-5'>Read more about me <a href="" className='text-[#4CCD99] hover:border-b hover:border-[#4CCD99]'>here!</a></h4>
+          <h3><a className='text-[#4CCD99] hover:border-b hover:border-[#4CCD99] z-10' href="https://www.dropbox.com/scl/fi/p5uoj7ulkeqyk68dn1x34/Villarreal-Tomas-CV-English.pdf?rlkey=i6ed6gewcam55c9okhrft7b43&dl=0" target="_blank">Have a look at my resume</a></h3>
+          <h4 className='mt-5'>Read more about me <a href="#about" className='text-[#4CCD99] hover:border-b hover:border-[#4CCD99]'>here!</a></h4>
         </div>
     </>
   )

@@ -1,18 +1,18 @@
 import './App.css'
 import { Route, BrowserRouter, Routes} from 'react-router-dom'
-import { useEffect, useRef, useState } from "react"
-import { motion } from "framer-motion"
+import { useEffect, useRef } from "react"
 // components
 import Navbar from './js/components/Navbar'
 import SocialLinkBar from './js/components/SocialLinkBar'
 import Home from './js/pages/Home'
+import Project from './js/pages/Project'
 import Footer from './js/components/Footer'
+import Backdrop from './js/components/Backdrop'
 
 const App = () => {
   // TODO:
-  // - add video playback to projects
-  // - add project page
-  // - add about project
+  // - add video playback to projects 
+  // - add about me section
   // - make form work
   // - fix cursor when hovering links and buttons
   // - make cool project thumbnails
@@ -42,23 +42,29 @@ const App = () => {
           window.removeEventListener('mousemove', handleMouseMove)
       }
   }, [])
+  
+  const isMobile = () => {
+    const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    return regex.test(navigator.userAgent);
+  }
 
   return (
     <>
       <div className='font-hack-nerd w-100 h-100 bg-[#222831]'>
         <BrowserRouter>
+          {/* <Backdrop /> */}
           {/* Cursor */}
           <div
               ref={cursorRef}
               id='cursor-custom' 
-              className='cursor-custom' 
+              className={`cursor-custom ${isMobile() ? 'hidden' : 'block'}`}
           />
 
           <Navbar />
           <SocialLinkBar />
           <Routes>
             <Route path='/' element={<Home />}/>
-            {/* <Route path='/about' element={<About />}/> */}
+            <Route path='/project/:shortname' element={<Project />}/>
           </Routes>
           <Footer />
         </BrowserRouter>

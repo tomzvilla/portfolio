@@ -2,31 +2,7 @@ import React, { useEffect } from 'react'
 import ProjectCard from './ProjectCard'
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-
-const projects = [
-  {
-    shortname: 'cienciaconecta',
-    title: 'CienciaConecta',
-    technologies: [{name: 'React'}, {name: 'Redux'}, {name: 'SASS'}, {name: 'NodeJS'}],
-    description: 'An application for managing the Science and Technology Fair of the Province of Cordoba. Developed and desgined the project frontend, including role-based authentication and authorization, session and user management.',
-    media: 'CienciaConecta.png',
-    // video: 'cienciaconecta.webp'
-  },
-  {
-    shortname: 'wordle',
-    title: 'Wordle Clone',
-    technologies: [{name: 'React'}, {name: 'Redux'}, {name: 'TypeScript'}, {name: 'Tailwind'}],
-    description: 'A website that allows you to play the famous game "Wordle" infinetly. Made to learn TypeScript and Tailwind. Full responsive layout with dark/light mode.',
-    media: 'Wordle.png'
-  },
-  {
-    shortname: 'project-management-site',
-    title: 'The Dojo - Project Managament',
-    technologies: [{name: 'React'}, {name: 'SASS'}, {name: 'Firebase'}],
-    description: 'The Dojo is a project management website that allows you and your team to create different projects, assign them to a member of your team and set deadlines. It has a dashboard where you can filter projects, and make comments on each of them.',
-    media: 'TheDojo.png'
-  }
-];
+import { projects } from '../../utils/projects';
 
 const underlineVariant = {
   visible: { width: '100%', transition: { duration: 0.5 } },
