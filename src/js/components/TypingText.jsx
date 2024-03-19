@@ -52,17 +52,17 @@ const TypingText = () => {
 
     return (
         <div>
-            <span className="inline text-[#4CCD99] text-3xl md:text-5xl h-[55px] mr-5">
+            <span className="inline text-primary text-3xl md:text-5xl h-[55px] mr-5">
                 A
             </span >
-            <motion.span className="inline text-[#4CCD99] text-3xl md:text-5xl h-[55px]">
+            <motion.span className="inline text-primary text-3xl md:text-5xl h-[55px]">
                 {displayWord }
             </motion.span>
             <motion.div
                 id="cursor"
                 variants={cursorVariants}
                 animate="blinking"
-                className="inline-block h-10 w-[2px] translate-y-1 bg-white"
+                className="inline-block h-12 w-[2px] translate-y-1 bg-primary"
             />
         </div>
     )

@@ -7,7 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#4CCD99',
+        primary: '#0aff9d',
+        darker: '#111111',
+        secondary: '#232323',
+        // primary: '#4CCD99',
+        // darker: '#222831',
+        // secondary: '#2C323C'
       },
       fontFamily: {
         'hack-nerd': ['"Hack Nerd Mono"', "sans-serif"],

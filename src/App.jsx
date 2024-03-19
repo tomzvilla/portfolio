@@ -50,7 +50,7 @@ const App = () => {
 
   return (
     <>
-      <div className='font-hack-nerd w-100 h-100 bg-[#222831]'>
+      <div className='font-hack-nerd w-100 h-100 bg-darker'>
         <BrowserRouter>
           {/* <Backdrop /> */}
           {/* Cursor */}

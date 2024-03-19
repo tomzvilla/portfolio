@@ -25,7 +25,7 @@ const ProjectList = () => {
     <section className='mt-[14rem] flex flex-col items-center' id='projects'>
         <div ref={ref} className='relative mb-20 group'>
           <h2 className='relative text-4xl text-white tracking-tight font-bold z-20' > Projects </h2>
-          <motion.div variants={underlineVariant} initial={'hidden'} animate={control} className='abslute bg-[#4CCD99] py-3 -mt-5 ml-1 group-hover:animate-underlined z-20'></motion.div>
+          <motion.div variants={underlineVariant} initial={'hidden'} animate={control} className='abslute bg-primary py-3 -mt-5 ml-1 group-hover:animate-underlined z-20'></motion.div>
         </div>
         {projects.map((project, index) => <ProjectCard project={project} key={index} />)}
     </section>
