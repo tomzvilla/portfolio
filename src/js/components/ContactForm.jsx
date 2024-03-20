@@ -1,14 +1,21 @@
 import Reveal from './Reveal'
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import FormElement from './FormElement'
+import Spinner from './Spinner'
 import { useForm, Controller } from "react-hook-form"
 import emailjs from '@emailjs/browser';
 
 const ContactForm = () => {
 
-    const form = useRef()
+    const form = useRef();
+    const [loading, setLoading] = useState(false)
+    const [alert, setAlert] = useState({
+        show: true,
+        error: false,
+        message: 'Lorem ipsum dolorem'
+    })
 
-    const { control, handleSubmit, reset, formState: { isSubmitSuccessful }, formState: { errors }} = useForm({
+    const { control, handleSubmit, reset, formState: { errors }} = useForm({
         defaultValues: {
             email: '',
             subject: '',
@@ -17,22 +24,39 @@ const ContactForm = () => {
     })
 
     useEffect(() => {
-        if (isSubmitSuccessful) {
-          reset()
+        if(alert.show) {
+            setTimeout(() => {
+                setAlert({
+                    show: false,
+                    error: false,
+                    message: ''
+                });
+            }, 5000)
         }
-      }, [isSubmitSuccessful, reset])
+    }, [alert])
 
     const onSubmit = async (_, e) => {
         e.preventDefault();
+        setLoading(true);
         try {
-            // await emailjs.sendForm(import.meta.env.VITE_SERVICE_ID, import.meta.env.VITE_TEMPLATE_ID, form.current, import.meta.env.VITE_PUBLIC_KEY);
-            console.log('SUCCESS')
+            await emailjs.sendForm(import.meta.env.VITE_SERVICE_ID, import.meta.env.VITE_TEMPLATE_ID, form.current, import.meta.env.VITE_PUBLIC_KEY);
+            reset();
+            setAlert({
+                show: true,
+                error: false,
+                message: 'Message sent!'
+            })
+
         } catch (err) {
-            console.log(err)
-            console.log('ERROR')
+            setAlert({
+                show: true,
+                error: true,
+                message: 'An error ocurred while sending your message, please try again'
+            })
+        } finally {
+            setLoading(false)
         }
-        
-        
+ 
     };
 
     return (
@@ -93,13 +117,22 @@ const ContactForm = () => {
                                 />
                             )}
                         />
-                        <div className='flex items-center justify-center pt-5'>
-                            <button type="submit" className="relative px-10 py-4 font-bold text-[#222831] group self-center">
+                        <div className='flex flex-col items-center justify-center pt-5'>
+                            {loading ?  
+                            <Spinner />
+                            :
+                            <button type="submit" className="relative px-10 py-4 font-bold text-darker group self-center">
                                 <span className="absolute inset-0 w-full h-full transition duration-300 transform -translate-x-3 -translate-y-3 bg-primary ease group-hover:translate-x-0 group-hover:translate-y-0 z-10"></span>
-                                <span className="absolute inset-0 w-full h-full ease border-2 border-[#FFF] group-hover:translate-x-0 group-hover:translate-y-0 z-0"></span>
+                                <span className="absolute inset-0 w-full h-full ease border-2 border-white group-hover:translate-x-0 group-hover:translate-y-0 z-0"></span>
                                 <span className="relative z-10 -inset-3 transition-all duration-300 ease group-hover:inset-0">Send message</span>
                             </button>
-                        </div>
+                            }
+                            {alert.show && 
+                                <div id='alert' className={`mt-10 py-7 px-5 text-lg rounded-md border-2 border-secondary ${alert.error ? 'bg-red-500 text-white' : 'bg-primary text-darker'}`}>
+                                    {alert.message}
+                                </div>
+                            }
+                        </div> 
                     </form>
                 </div>
             </section>

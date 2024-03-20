@@ -22,7 +22,7 @@ const Presentation = () => {
                 </p>
             </div>
             <a href="/#contact" className='z-10 cursor-none'>
-              <button className='text-[#222831] font-bold px-10 py-4 bg-primary mt-10 hover:bg-[#6bdfb0] z-10 cursor-none'>Get in touch!</button>
+              <button className='text-darker font-bold px-10 py-4 bg-primary mt-10 hover:bg-[#53ffba] z-10 cursor-none'>Get in touch!</button>
             </a>
           </div>
         </Reveal>
