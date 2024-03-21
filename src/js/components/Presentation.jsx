@@ -18,7 +18,7 @@ const Presentation = () => {
                 <p className='text-white max-w-[450px] md:max-w-[650px] text-lg'>
                     I'm an adventurer, with passion for web development and I'm in a constant search of new challenges.
                     I love learning new stuff everyday.
-                    Also, a coffe enjoyer ☕
+                    Also, a coffee enjoyer ☕
                 </p>
             </div>
             <a href="/#contact" className='z-10 cursor-none'>

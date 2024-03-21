@@ -6,16 +6,17 @@ import Navbar from './js/components/Navbar'
 import SocialLinkBar from './js/components/SocialLinkBar'
 import Home from './js/pages/Home'
 import Project from './js/pages/Project'
+import About from './js/pages/About'
 import Footer from './js/components/Footer'
 import Backdrop from './js/components/Backdrop'
+import ScrollToTop from './js/components/ScrollToTop'
 
 const App = () => {
   // TODO:
   // - add video playback to projects 
-  // - add about me section
-  // - make form work
   // - fix cursor when hovering links and buttons
   // - make cool project thumbnails
+  // - make backdrop animation
 
   const cursorRef = useRef()
 
@@ -54,6 +55,7 @@ const App = () => {
         <BrowserRouter>
           {/* <Backdrop /> */}
           {/* Cursor */}
+          <ScrollToTop />
           <div
               ref={cursorRef}
               id='cursor-custom' 
@@ -65,6 +67,7 @@ const App = () => {
           <Routes>
             <Route path='/' element={<Home />}/>
             <Route path='/project/:shortname' element={<Project />}/>
+            <Route path='/about' element={<About />}/>
           </Routes>
           <Footer />
         </BrowserRouter>

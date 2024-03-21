@@ -10,9 +10,9 @@ const ContactForm = () => {
     const form = useRef();
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState({
-        show: true,
+        show: false,
         error: false,
-        message: 'Lorem ipsum dolorem'
+        message: ''
     })
 
     const { control, handleSubmit, reset, formState: { errors }} = useForm({

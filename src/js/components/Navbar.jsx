@@ -8,9 +8,9 @@ const Navbar = () => {
             <p className={'lg:text-2xl hover:text-primary'}>Tomas Villarreal</p>
         </NavLink>
         <nav className='flex lg:text-2xl gap-20'>
-            <HashLink to={'/#about'} className={'hover:text-primary'}>
+            <NavLink to={'/about'} className={'hover:text-primary'}>
                 <p>about</p>
-            </HashLink>
+            </NavLink>
             <HashLink to={'/#projects'} className={'hover:text-primary'}>
                 <p>projects</p>
             </HashLink>

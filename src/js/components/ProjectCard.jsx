@@ -67,7 +67,9 @@ const ProjectCard = ({project}) => {
                     className='z-10'
                     transition={{ duration: 0.5 }}
                 >
-                    <img className='w-[300px] sm:w-[350px] rounded-xl aspect-[16/9] lg:ml-10 ease-linear transition-all hover:scale-110' src={getImageUrl(project.media)} alt="" />
+                    <div className='w-[300px] sm:w-[350px] rounded-xl aspect-[16/9] lg:ml-10 ease-linear transition-all overflow-hidden'>
+                        <img className='w-full h-full object-cover transition-transform duration-300 transform-gpu hover:scale-110' src={getImageUrl(project.thumbnail)} alt="" />
+                    </div>
                     <div className='flex flex-row justify-center lg:ml-10 mt-3 gap-5'>
                         <a href={project.projectGithub} target='_blank' className='hover:-rotate-12'>
                             <svg className='fill-current w-[26px] h-[26px] text-white  hover:text-primary' xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
