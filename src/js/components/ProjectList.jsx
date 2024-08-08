@@ -28,6 +28,9 @@ const ProjectList = () => {
           <motion.div variants={underlineVariant} initial={'hidden'} animate={control} className='abslute bg-primary py-3 -mt-5 ml-1 group-hover:animate-underlined z-20'></motion.div>
         </div>
         {projects.map((project, index) => <ProjectCard project={project} key={index} />)}
+        <div className='text-white text-lg sm:text-2xl flex flex-col items-center mt-[5rem] font-bold relative z-10'>
+          <h4 className='mt-5'>You can find more of my projects <a href='https://github.com/tomzvilla' target='_blank' className='text-primary hover:border-b hover:border-primary'>here!</a></h4>
+        </div>
     </section>
   )
 }

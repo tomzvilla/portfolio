@@ -6,9 +6,10 @@ const projects = [
       description: 'An application for managing the Science and Technology Fair of the Province of Cordoba. Developed and desgined the project frontend, including role-based authentication and authorization, session and user management.',
       longDescription: 'I lead the development of a Final Degree project (alongside 3 other developers), a SPA (Single Page Application) built with ReactJS, NodeJS, Express, MongoDB, Redis, and Bull. This application was tailored for managing the Science and Technology Fair of the Province of Córdoba. As the lead developer, I focused on crafting the FrontEnd, which encompassed intricate features such as role-based authentication and authorization, session management, and user administration. The developed functionalities includes: user management, project management, science fair management, evaluator management, notifications, mailing, and project evaluation.  Collaborating closely with the client from the Ministry of Education and the Ministery of Science and Technology, I conducted extensive meetings to gather and refine project requirements. These requirements were then meticulously translated into user stories using Jira, ensuring clarity and alignment with stakeholder expectations. Upon completion, I orchestrated the deployment of the application utilizing Netlify and AWS, ensuring seamless accessibility and reliability for end-users.',
       thumbnail: 'CienciaConecta.png',
-      // video: 'cienciaconecta.webp'
+      video: 'cienciaconecta.webm',
       projectGithub: 'https://github.com/tomzvilla/cienciaConecta',
-      projectShowcase: ''
+      projectShowcase: '',
+      media: ['CienciaConecta1.png', 'CienciaConecta2.png', 'CienciaConecta3.png'],
     },
     {
       shortname: 'wordle',
@@ -19,7 +20,8 @@ const projects = [
       thumbnail: 'Wordle.png',
       projectGithub: 'https://github.com/tomzvilla/wordle',
       projectShowcase: 'https://tomzvilla.github.io/wordle/',
-      media: ['Wordle1.png', 'Wordle2.png']
+      media: ['Wordle1.png', 'Wordle2.png'],
+      video: 'Wordle.webm'
     },
     {
       shortname: 'project-management-site',
@@ -30,7 +32,8 @@ const projects = [
       thumbnail: 'TheDojo.png',
       projectGithub: '',
       projectShowcase: 'https://thedojosite-80d90.web.app',
-      media: ['TheDojo1.png', 'TheDojo2.png']
+      media: ['TheDojo1.png', 'TheDojo2.png'],
+      video: 'TheDojo.webm'
     }
 ];
 

@@ -1,7 +1,18 @@
 import TypingText from './TypingText';
 import Reveal from './Reveal';
+import { useEffect, useState } from 'react';
+const Presentation = (props) => {
 
-const Presentation = () => {
+  const [duration, setDuration] = useState(7);
+
+  useEffect(() => {
+    if (props.firstLoad) {
+      setDuration(7);
+      setTimeout(() => props.setFirstLoad(false), 5000);
+    } else {
+      setDuration(1);
+    }
+  }, []);
 
   return (
     <section id='home'>
@@ -10,7 +21,7 @@ const Presentation = () => {
             <polygon points="100 0, 100 60, 0 100, 0 40" fill="#1d1d1d"/>
           </svg>
         </div>
-        <Reveal transitionDuration={0.5}>
+        <Reveal transitionDuration={0.5} delay={duration} identifier={'presentation'}>
           <div className='flex flex-col items-center justify-center mx-auto md:-ml-[2rem] mt-[13rem] lg:-ml-[10rem] w-full'>
             <div className='space-y-8 z-10 text-center md:text-left'>
                 <h1 className='text-white text-3xl md:text-5xl font-bold'>Hi, I'm Tomas</h1>

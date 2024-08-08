@@ -5,10 +5,10 @@ import ReadMore from '../components/ReadMore'
 import ProjectList from '../components/ProjectList'
 import ContactForm from '../components/ContactForm'
 
-const Home = () => {
+const Home = (props) => {
   return (
     <>
-        <Presentation />
+        <Presentation firstLoad={props.firstLoad} setFirstLoad={props.setFirstLoad} />
         <Skills/>
         <ReadMore />
         <ProjectList />

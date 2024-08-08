@@ -60,7 +60,7 @@ const ContactForm = () => {
     };
 
     return (
-        <Reveal>
+        <Reveal identifier={'contact'}>
             <section className="mt-[10rem] relative z-10" id='contact'>
                 <div className="py-8 lg:py-16 px-4 mx-auto  max-w-screen-md z-10">
                     <h2 className="mb-20 text-2xl sm:text-4xl tracking-tight font-bold text-center text-white z-10">Get in touch with me!</h2>

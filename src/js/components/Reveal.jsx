@@ -7,10 +7,14 @@ const textVariant = {
     visible: {opacity: 1, y: 0},
 }
 
-const Reveal = ({ children, transitionDuration }) => {
+const Reveal = ({ children, transitionDuration, delay = 0, identifier }) => {
 
-    const [ref, inView] = useInView({ threshold: 0.6 });
-    const [animationRan, setAnimationRan] = useState(false)
+    const [ref, inView] = useInView({ threshold: 0.4 });
+    // const [animationRan, setAnimationRan] = useState(() => {
+    //     const storedAnimationRan = localStorage.getItem(`animationRan-${identifier}`);
+    //     return storedAnimationRan === 'true';
+    // });
+    const [animationRan, setAnimationRan] = useState(false);
 
     const mainControls = useAnimation()
 
@@ -20,7 +24,7 @@ const Reveal = ({ children, transitionDuration }) => {
             setAnimationRan(true);
         }
 
-    }, [inView, mainControls, animationRan]);
+    }, [inView, mainControls, animationRan, identifier]);
 
     return (
         <div>
@@ -29,7 +33,8 @@ const Reveal = ({ children, transitionDuration }) => {
                 ref={ref}
                 animate={mainControls}
                 initial={'hidden'}
-                transition={{ duration: transitionDuration }}
+                transition={{ duration: transitionDuration, delay: delay}}
+                viewport={{ once: true }}
             >
                 {children}
             </motion.div>

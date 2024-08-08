@@ -1,6 +1,6 @@
 import './App.css'
 import { Route, BrowserRouter, Routes} from 'react-router-dom'
-import { useEffect, useRef } from "react"
+import { useEffect, useState, useRef } from "react"
 // components
 import Navbar from './js/components/Navbar'
 import SocialLinkBar from './js/components/SocialLinkBar'
@@ -8,17 +8,18 @@ import Home from './js/pages/Home'
 import Project from './js/pages/Project'
 import About from './js/pages/About'
 import Footer from './js/components/Footer'
-import Backdrop from './js/components/Backdrop'
+import Preloader from './js/components/Preloader'
 import ScrollToTop from './js/components/ScrollToTop'
 
 const App = () => {
   // TODO:
-  // - add video playback to projects 
   // - fix cursor when hovering links and buttons
-  // - make cool project thumbnails
-  // - make backdrop animation
+  // - add support to spanish lang
 
   const cursorRef = useRef()
+
+  const [mobile, setMobile] = useState(false)
+  const [firstLoad, setFirstLoad] = useState(true)
 
   const handleMouseMove = (e) => {
     const cursor = cursorRef.current;
@@ -37,10 +38,13 @@ const App = () => {
   }
 
   useEffect(()=> {
+      checkMobile()
       window.addEventListener('mousemove', handleMouseMove)
+      window.addEventListener('resize', checkMobile);
 
       return () => {
           window.removeEventListener('mousemove', handleMouseMove)
+          window.removeEventListener('resize', checkMobile);
       }
   }, [])
   
@@ -49,23 +53,31 @@ const App = () => {
     return regex.test(navigator.userAgent);
   }
 
+  const checkMobile = () => {
+    if(isMobile()) {
+      setMobile(true);
+    } else {
+      setMobile(window.innerWidth < 768);
+    }
+  };
+
   return (
     <>
       <div className='font-hack-nerd w-100 h-100 bg-darker'>
         <BrowserRouter>
-          {/* <Backdrop /> */}
           {/* Cursor */}
           <ScrollToTop />
+          <Preloader />
           <div
               ref={cursorRef}
               id='cursor-custom' 
-              className={`cursor-custom ${isMobile() ? 'hidden' : 'block'}`}
+              className={`cursor-custom ${mobile ? 'hidden' : 'block'}`}
           />
 
           <Navbar />
           <SocialLinkBar />
           <Routes>
-            <Route path='/' element={<Home />}/>
+            <Route path='/' element={<Home firstLoad={firstLoad} setFirstLoad={setFirstLoad}/>}/>
             <Route path='/project/:shortname' element={<Project />}/>
             <Route path='/about' element={<About />}/>
           </Routes>

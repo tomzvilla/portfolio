@@ -45,7 +45,11 @@ const Skills = () => {
     const mainControls = useAnimation();
     const [ref, inView] = useInView()
     const [refText, inViewText] = useInView({ threshold: 0.6 })
-    const [animationRan, setAnimationRan] = useState(false)
+    // const [animationRan, setAnimationRan] = useState(() => {
+    //     const storedAnimationRan = localStorage.getItem(`animationRan-skills`);
+    //     return storedAnimationRan === 'true';
+    // });
+    const [animationRan, setAnimationRan] = useState(false);
 
     useEffect(() => {
         if (inView) {
@@ -87,7 +91,6 @@ const Skills = () => {
                 animate={mainControls}
                 transition={{ duration: 0.7 }}
             >
-                {/* <h3 className='text-xl mb-1'>Technologies</h3> */}
                 <div className=''>
                     <ul className='flex flex-row flex-wrap gap-5 items-center justify-center sm:items-start sm:justify-start'>
                          {technologies.map( (t, index) => <Tech tech={t} key={index} />)}
