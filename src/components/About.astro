@@ -1,0 +1,33 @@
+---
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/utils';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const a = d.about;
+---
+<section class="about" id={d.ids.about} aria-labelledby="about-title">
+  <div>
+    <div class="sh rv"><span class="n">{a.n}</span><h2 id="about-title">{a.title}</h2></div>
+    {a.paragraphs.map((p, i) => <p class="rv" style={`--d:${100 + i * 80}ms`} set:html={p} />)}
+  </div>
+  <dl class="rv" style="--d:200ms">
+    {a.facts.map((f) => <Fragment><dt class="mono">{f.k}</dt><dd>{f.v}</dd></Fragment>)}
+  </dl>
+</section>
+
+<style>
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; padding: 80px 48px; border-top: 1px solid var(--line); }
+  p { max-width: 520px; font-size: 17px; line-height: 1.6; color: var(--text2); font-weight: 300; }
+  .sh + p { margin-top: 22px; }
+  p + p { margin-top: 16px; }
+  p :global(b) { color: var(--strong); font-weight: 400; }
+  dl { align-self: start; margin-top: 52px; display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; font-size: 13px; }
+  dt { padding-top: 3px; font-size: 11px; color: var(--muted); }
+  dd { color: var(--text); line-height: 1.5; }
+  @media (max-width: 600px) {
+    .about { grid-template-columns: 1fr; gap: 28px; padding: 56px 20px; }
+    dl { margin-top: 0; }
+  }
+</style>
