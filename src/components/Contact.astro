@@ -1,0 +1,37 @@
+---
+import { EMAIL, GITHUB, LINKEDIN } from '../config';
+import type { Lang } from '../i18n/types';
+import { mailtoHref, t } from '../i18n/utils';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const c = d.contact;
+---
+<section class="contact" id={d.ids.contact} aria-labelledby="contact-title">
+  <h2 id="contact-title" class="rv">{c.title}</h2>
+  <a class="big rv" style="--d:100ms" href={mailtoHref(lang)}>{EMAIL}</a>
+  <p class="rv" style="--d:200ms">{c.replies} {c.also} <a href={LINKEDIN} rel="me">LinkedIn</a> {c.and} <a href={GITHUB} rel="me">GitHub</a>.</p>
+</section>
+
+<style>
+  .contact { padding: 90px var(--px) 60px; border-top: 1px solid var(--line); text-align: center; }
+  h2 { font-size: 34px; color: var(--strong); font-weight: 400; letter-spacing: -.02em; }
+  .big {
+    position: relative; display: inline-block; margin-top: 24px; padding-bottom: 6px;
+    font-size: 28px; color: var(--amber); text-decoration: none;
+  }
+  .big::after {
+    content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px;
+    background: var(--contactline); transition: background .3s;
+  }
+  .big:hover::after { background: var(--amber); }
+  p { margin-top: 18px; font-size: 13px; color: var(--muted); }
+  p a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line2); transition: border-color .2s; }
+  p a:hover { border-color: var(--amber); }
+  @media (max-width: 600px) {
+    .contact { padding-block: 64px 40px; }
+    h2 { font-size: 26px; }
+    .big { font-size: 18px; color: var(--amber-ink); }
+  }
+</style>

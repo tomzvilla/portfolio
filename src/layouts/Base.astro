@@ -1,0 +1,58 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+import Nav from '../components/Nav.astro';
+import type { Lang } from '../i18n/types';
+import { altLangPath, t } from '../i18n/utils';
+import { THEME_INIT } from '../scripts/theme';
+
+interface Props { lang: Lang; title?: string; description?: string }
+const { lang, title, description } = Astro.props;
+const d = t(lang);
+const pageTitle = title ?? d.meta.title;
+const pageDescription = description ?? d.meta.description;
+const site = Astro.site!;
+const canonical = new URL(Astro.url.pathname, site).href;
+const altPath = altLangPath(Astro.url.pathname);
+const alternate = new URL(altPath, site).href;
+const href: Record<Lang, string> = lang === 'es' ? { es: canonical, en: alternate } : { es: alternate, en: canonical };
+const ogImage = new URL(`/og/og-${lang}.png`, site).href;
+---
+<!doctype html>
+<html lang={d.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline set:html={THEME_INIT}></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="es" href={href.es} />
+    <link rel="alternate" hreflang="en" href={href.en} />
+    <link rel="alternate" hreflang="x-default" href={href.es} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" href="/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/ibm-plex-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={d.ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <a class="skip" href="#main">{d.nav.skip}</a>
+    <Nav lang={lang} altHref={altPath} />
+    <main id="main"><slot /></main>
+    <Footer lang={lang} />
+    <script>
+      import { initReveal } from '../scripts/reveal';
+      initReveal();
+    </script>
+  </body>
+</html>

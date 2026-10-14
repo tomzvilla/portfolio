@@ -1,0 +1,9 @@
+---
+import type { GetStaticPaths } from 'astro';
+import ProjectPage from '../../components/ProjectPage.astro';
+import { workStaticPaths, type WorkPageProps } from '../../lib/work';
+
+export const getStaticPaths = (() => workStaticPaths('es')) satisfies GetStaticPaths;
+type Props = WorkPageProps;
+---
+<ProjectPage lang="es" {...Astro.props} />

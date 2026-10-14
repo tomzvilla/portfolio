@@ -1,0 +1,155 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import { AUTHOR } from '../config';
+import type { Lang } from '../i18n/types';
+import { homePath, otherLang, t } from '../i18n/utils';
+
+interface Props { lang: Lang; altHref: string }
+const { lang, altHref } = Astro.props;
+const d = t(lang);
+const home = homePath(lang);
+const anchors = [
+  [d.ids.home, d.nav.home],
+  [d.ids.services, d.nav.services],
+  [d.ids.work, d.nav.work],
+  [d.ids.about, d.nav.about],
+  [d.ids.contact, d.nav.contact],
+] as const;
+const other = otherLang(lang);
+---
+<header class="top">
+  <nav aria-label={d.nav.label}>
+    <a class="brand" href={`${home}#${d.ids.home}`}>{AUTHOR}</a>
+    <div class="ln">
+      <ul class="anchors">
+        {anchors.map(([id, label]) => <li><a href={`${home}#${id}`}>{label}</a></li>)}
+      </ul>
+      <a class="lang" href={altHref} hreflang={other} lang={other} aria-label={d.nav.otherLangLabel}>{d.nav.otherLang}</a>
+    </div>
+    <div class="rt">
+      <span class="av"><i aria-hidden="true"></i>{d.nav.available}</span>
+      <span class="thw"><ThemeToggle lang={lang} /></span>
+      <button class="mb" type="button" aria-label={d.nav.menu} aria-expanded="false" aria-controls="mnav" data-menu-toggle>
+        <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+      </button>
+    </div>
+  </nav>
+  <div class="mnav" id="mnav" hidden>
+    <ul>
+      {anchors.map(([id, label]) => <li><a href={`${home}#${id}`}>{label}</a></li>)}
+    </ul>
+    <div class="mx">
+      <a class="lang" href={altHref} hreflang={other} lang={other}>{d.nav.otherLangLabel}</a>
+      <ThemeToggle lang={lang} />
+    </div>
+  </div>
+</header>
+
+<script>
+  // Los links apuntan a /#seccion para que funcionen sin JS; una vez en la sección, la URL queda limpia.
+  const clean = () => {
+    if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
+  };
+  addEventListener('hashchange', clean);
+  if (location.hash) {
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    addEventListener('load', () => {
+      target?.scrollIntoView({ behavior: 'instant' });
+      clean();
+    }, { once: true });
+  }
+
+  // Menú de secciones para pantallas angostas, donde las anclas de la barra no entran.
+  const btn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const panel = document.getElementById('mnav');
+  if (btn && panel) {
+    const setOpen = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+    };
+    btn.addEventListener('click', () => setOpen(panel.hidden));
+    panel.addEventListener('click', (e) => { if ((e.target as Element).closest('a')) setOpen(false); });
+    addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) { setOpen(false); btn.focus(); }
+    });
+    addEventListener('click', (e) => {
+      if (!panel.hidden && !(e.target as Element).closest('.top')) setOpen(false);
+    });
+    matchMedia('(min-width: 861px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+  }
+</script>
+
+<style>
+  .top { position: sticky; top: 0; z-index: 10; }
+  nav {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 18px var(--px); font-size: 13px; color: var(--muted);
+    background: var(--navbg); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { color: var(--strong); font-weight: 500; font-size: 14px; text-decoration: none; }
+  .ln { display: flex; align-items: center; gap: 24px; }
+  .anchors { display: flex; gap: 24px; }
+  .ln a { position: relative; text-decoration: none; transition: color .2s; }
+  .ln a::after {
+    content: ''; position: absolute; left: 0; right: 100%; bottom: -4px; height: 1px;
+    background: var(--amber); transition: right .25s;
+  }
+  .ln a:hover { color: var(--strong); }
+  .ln a:hover::after { right: 0; }
+  .rt { display: flex; align-items: center; }
+  .av { display: inline-flex; align-items: center; gap: 8px; color: var(--green); font-size: 12px; }
+  .av i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); position: relative; }
+  .av i::after {
+    content: ''; position: absolute; inset: -4px; border-radius: 50%;
+    border: 1px solid var(--green); animation: ping 2s ease-out infinite;
+  }
+  .mb {
+    display: none; width: 30px; height: 30px; margin-left: 10px;
+    flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    border: 1px solid var(--line2); border-radius: 999px; transition: border-color .2s;
+  }
+  .mb:hover, .mb[aria-expanded='true'] { border-color: var(--amber); }
+  .mb span { width: 12px; height: 1px; background: var(--text); transition: transform .25s var(--ease), opacity .2s; }
+  .mb[aria-expanded='true'] span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+  .mb[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
+  .mb[aria-expanded='true'] span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
+  .mnav {
+    position: absolute; top: 100%; left: 0; right: 0;
+    padding: 6px var(--px) 14px;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    box-shadow: 0 18px 30px -18px rgba(0, 0, 0, .35);
+    animation: drop .22s var(--ease);
+  }
+  .mnav[hidden] { display: none; }
+  .mnav li a {
+    display: block; padding: 13px 0; font-size: 15px;
+    color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line);
+  }
+  .mnav li:last-child a { border-bottom: 0; }
+  .mnav a:hover, .mnav a:focus-visible { color: var(--amber-ink); }
+  .thw { display: inline-flex; }
+  .mx {
+    display: none; justify-content: space-between; align-items: center;
+    margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--line);
+  }
+  .mx .lang { font-size: 14px; color: var(--muted); text-decoration: none; }
+  @keyframes drop { from { opacity: 0; transform: translateY(-6px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .mnav { animation: none; }
+    .mb span { transition: none; }
+  }
+  @media (max-width: 860px) {
+    .anchors { display: none; }
+    :global(html.js) .mb { display: inline-flex; }
+  }
+  @media (min-width: 861px) {
+    .mnav { display: none; }
+  }
+  @media (max-width: 600px) {
+    nav { padding-block: 14px; }
+    /* En celular la barra queda en nombre, disponibilidad y menú; idioma y tema pasan al panel. */
+    :global(html.js) .ln, :global(html.js) .thw { display: none; }
+    .mx { display: flex; }
+  }
+</style>

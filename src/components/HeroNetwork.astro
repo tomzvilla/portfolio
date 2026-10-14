@@ -1,0 +1,136 @@
+<div class="vec" aria-hidden="true"><canvas></canvas></div>
+
+<script>
+  import { breathe, FIELD, layoutField, step, type Field, type Point, type Ring } from '../scripts/hero-field';
+
+  const vec = document.querySelector<HTMLElement>('.vec');
+  const hero = vec?.closest<HTMLElement>('[data-hero]');
+  const canvas = vec?.querySelector('canvas');
+  const ctx = canvas?.getContext('2d');
+
+  if (vec && hero && canvas && ctx) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobile = matchMedia('(max-width: 600px)');
+    const root = document.documentElement;
+    let field: Field = { cols: 0, rows: 0, dots: [] };
+    let w = 0;
+    let h = 0;
+    let colors = { dot: '', hot: '' };
+    let cursor: Point | null = null;
+    let rings: Ring[] = [];
+    let visible = true;
+    let raf = 0;
+    const t0 = performance.now();
+
+    const readColors = () => {
+      const cs = getComputedStyle(root);
+      colors = { dot: cs.getPropertyValue('--muted').trim(), hot: cs.getPropertyValue('--amber').trim() };
+    };
+    const layout = () => {
+      const r = vec.getBoundingClientRect();
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      w = r.width;
+      h = r.height;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      field = layoutField(w, h);
+    };
+
+    const draw = (now: number) => {
+      const t = (now - t0) / 1000;
+      const { cols, rows, dots } = field;
+      ctx.clearRect(0, 0, w, h);
+      // la lente une a los vecinos encendidos
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = colors.hot;
+      for (let j = 0; j <= rows; j++) {
+        for (let i = 0; i <= cols; i++) {
+          const p = dots[j * (cols + 1) + i];
+          if (p.glow < FIELD.linkMin) continue;
+          const right = i < cols ? dots[j * (cols + 1) + i + 1] : null;
+          const down = j < rows ? dots[(j + 1) * (cols + 1) + i] : null;
+          for (const q of [right, down]) {
+            if (!q || q.glow < FIELD.linkMin) continue;
+            ctx.globalAlpha = Math.min(p.glow, q.glow) * 0.55;
+            ctx.beginPath();
+            ctx.moveTo(p.x + p.dx, p.y + p.dy);
+            ctx.lineTo(q.x + q.dx, q.y + q.dy);
+            ctx.stroke();
+          }
+        }
+      }
+      for (const p of dots) {
+        if (p.w < 0.02 && p.glow < 0.02) continue;
+        const a = Math.min(1, p.w * (reduce ? 1 : breathe(t, p.x, p.y)) * 0.8);
+        ctx.globalAlpha = Math.max(a, p.glow);
+        ctx.fillStyle = p.glow > 0.05 ? colors.hot : colors.dot;
+        ctx.beginPath();
+        ctx.arc(p.x + p.dx, p.y + p.dy, 0.9 + p.w * 1.1 + p.glow * 1.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    };
+
+    const frame = (now: number) => {
+      rings = rings.filter((r) => now - r.t < FIELD.ringMs);
+      step(field, cursor, rings, now);
+      draw(now);
+      raf = !reduce && visible && !mobile.matches && !document.hidden ? requestAnimationFrame(frame) : 0;
+    };
+    const start = () => {
+      if (!raf) raf = requestAnimationFrame(frame);
+    };
+
+    readColors();
+    layout();
+    start();
+
+    new ResizeObserver(() => {
+      layout();
+      start();
+    }).observe(vec);
+    new MutationObserver(() => {
+      readColors();
+      start();
+    }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible) start();
+    }).observe(hero);
+    document.addEventListener('visibilitychange', start);
+
+    if (!reduce) {
+      const local = (e: MouseEvent): Point => {
+        const r = canvas.getBoundingClientRect();
+        return { x: e.clientX - r.left, y: e.clientY - r.top };
+      };
+      hero.addEventListener('mousemove', (e) => {
+        if (mobile.matches) return;
+        cursor = local(e);
+      });
+      hero.addEventListener('mouseleave', () => {
+        cursor = null;
+      });
+      hero.addEventListener('click', (e) => {
+        if (mobile.matches) return;
+        rings.push({ ...local(e), t: performance.now() });
+      });
+    }
+  }
+</script>
+
+<style>
+  .vec {
+    position: absolute; top: 24px; bottom: 24px; right: var(--px); z-index: 0;
+    width: min(480px, 38vw);
+    pointer-events: none;
+  }
+  canvas { display: block; width: 100%; height: 100%; }
+  :global(.js) .vec { opacity: 0; transition: opacity 1.2s .3s; }
+  :global(.js [data-hero].in) .vec { opacity: 1; }
+
+  @media (max-width: 600px) {
+    .vec { display: none; }
+  }
+</style>

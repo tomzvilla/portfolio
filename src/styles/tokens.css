@@ -1,0 +1,27 @@
+:root {
+  --bg: #0F1217; --text: #D7DBE3; --text2: #AEB6C2; --muted: #7D8594; --muted2: #8E96A5;
+  --muted3: #5B6373; --muted4: #6C7483; --tech: #9AA2B1; --faint: #4E5866;
+  --line: #1A1F28; --line2: #2E3542; --line3: #2A313D;
+  --surface: #141821; --surfacehi: #1B1D1A;
+  --amber: #E0B35C; --amber-ink: #E0B35C; --green: #7EDB9B; --contactline: #3A3A2E; --strong: #fff;
+  --navbg: rgba(15, 18, 23, .85); --graphbg: rgba(15, 18, 23, .6);
+  --amber-a12: rgba(224, 179, 92, .12); --amber-a09: rgba(224, 179, 92, .09);
+  --dots: #1A1F28; --vec: #2E3542; --vecnode: #3A4252;
+
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  color-scheme: dark;
+}
+
+html[data-theme='light'] {
+  --bg: #F4F2EC; --text: #1C1E22; --text2: #4A4E55; --muted: #6B6E73; --muted2: #7B7F86;
+  --muted3: #9A9DA2; --muted4: #8A8D93; --tech: #5E626A; --faint: #B3B5B9;
+  --line: #E3E0D7; --line2: #CFCBC0; --line3: #D8D4CA;
+  --surface: #FBFAF6; --surfacehi: #F6EFDC;
+  --amber: #A87A1E; --amber-ink: #8C6414; --green: #1F7A4D; --contactline: #D9CDAE; --strong: #0E0F12;
+  --navbg: rgba(244, 242, 236, .85); --graphbg: rgba(251, 250, 246, .6);
+  --amber-a12: rgba(168, 122, 30, .12); --amber-a09: rgba(168, 122, 30, .10);
+  --dots: #DCD8CE; --vec: #CFCBC0; --vecnode: #B9B4A8;
+  color-scheme: light;
+}

@@ -1,0 +1,40 @@
+---
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/utils';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<button class="th" type="button" aria-label={t(lang).nav.theme} aria-pressed="false" data-theme-toggle>
+  <span class="moon" aria-hidden="true">☾</span><span class="sun" aria-hidden="true">☀</span>
+</button>
+
+<script>
+  import { applyTheme, currentTheme } from '../scripts/theme';
+
+  // Puede haber más de un toggle (barra y menú mobile): todos reflejan el mismo estado.
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+  const sync = () => buttons.forEach((b) => b.setAttribute('aria-pressed', String(currentTheme() === 'light')));
+  sync();
+  for (const btn of buttons) {
+    btn.addEventListener('click', () => {
+      applyTheme(currentTheme() === 'light' ? 'dark' : 'light');
+      sync();
+    });
+  }
+</script>
+
+<style>
+  .th {
+    width: 30px; height: 30px; margin-left: 16px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line2); border-radius: 999px;
+    color: var(--text); font-size: 13px;
+    transition: border-color .2s, transform .3s;
+  }
+  .th:hover { border-color: var(--amber); transform: rotate(20deg); }
+  .sun { display: none; }
+  :global(html[data-theme='light']) .sun { display: inline; }
+  :global(html[data-theme='light']) .moon { display: none; }
+  :global(html:not(.js)) .th { display: none; }
+</style>
