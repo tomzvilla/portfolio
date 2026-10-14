@@ -1,0 +1,130 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { AUTHOR, EMAIL } from '../config';
+import type { Lang } from '../i18n/types';
+import { homePath, mailtoHref, t, workPath } from '../i18n/utils';
+import { slugOf, type WorkPageProps } from '../lib/work';
+
+type Props = WorkPageProps & { lang: Lang };
+const { lang, entry, prev, next } = Astro.props;
+const d = t(lang);
+const p = d.project;
+const data = entry.data;
+const slug = slugOf(entry);
+const { Content } = await render(entry);
+
+const videos = import.meta.glob<string>('/src/assets/work/*/*.webm', { query: '?url', import: 'default', eager: true });
+const videoSrc = data.video ? videos[`/src/assets/work/${slug}/${data.video}`] : undefined;
+if (data.video && !videoSrc) throw new Error(`No existe src/assets/work/${slug}/${data.video}`);
+---
+<Base lang={lang} title={`${data.title} · ${AUTHOR}`} description={`${data.problem} ${data.summary}`}>
+  <article class="project">
+    <a class="back mono" href={`${homePath(lang)}#${d.ids.work}`}>{p.back}</a>
+    <p class="k mono rv">{data.client} · {data.period} · {data.role}</p>
+    <h1 class="rv" style="--d:80ms">{data.title}</h1>
+    <p class="summary rv" style="--d:160ms"><b>{data.problem}</b> {data.summary}</p>
+
+    <div class="body rv" style="--d:240ms"><Content /></div>
+
+    {data.images && data.images.length > 0 && (
+      <section class="block" aria-labelledby="gallery-title">
+        <h2 id="gallery-title" class="mono">{p.gallery}</h2>
+        <div class="gallery">
+          {data.images.map((img, i) => (
+            <figure>
+              <Image src={img.src} alt={img.alt} widths={[640, 1280, 1920]} sizes="(max-width: 600px) 100vw, 880px" loading={i === 0 ? 'eager' : 'lazy'} />
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {videoSrc && (
+      <section class="block" aria-labelledby="video-title">
+        <h2 id="video-title" class="mono">{p.video}</h2>
+        <video src={videoSrc} controls preload="metadata" playsinline></video>
+      </section>
+    )}
+
+    {data.stack.length > 0 && (
+      <section class="block" aria-labelledby="stack-title">
+        <h2 id="stack-title" class="mono">{p.stack}</h2>
+        <ul class="chips">{data.stack.map((s) => <li class="mono">{s}</li>)}</ul>
+      </section>
+    )}
+
+    {data.links && data.links.length > 0 && (
+      <ul class="links">{data.links.map((l) => <li><a href={l.href} rel="noopener">{l.label} ↗</a></li>)}</ul>
+    )}
+
+    <nav class="pager" aria-label={p.pager}>
+      {prev && <a rel="prev" href={workPath(lang, slugOf(prev))}><span class="mono">{p.prev}</span>{prev.data.title}</a>}
+      {next && <a rel="next" href={workPath(lang, slugOf(next))}><span class="mono">{p.next}</span>{next.data.title}</a>}
+    </nav>
+
+    <section class="cta" aria-labelledby="cta-title">
+      <h2 id="cta-title">{p.ctaTitle}</h2>
+      <a class="mail" href={mailtoHref(lang)}>{EMAIL}</a>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .project { max-width: 880px; margin: 0 auto; padding: 72px 48px 40px; }
+  .back { display: inline-block; margin-bottom: 48px; font-size: 11px; letter-spacing: .12em; color: var(--muted); text-decoration: none; transition: color .2s; }
+  .back:hover { color: var(--amber-ink); }
+  .k { margin-bottom: 18px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: 48px; font-weight: 300; line-height: 1.05; letter-spacing: -.03em; color: var(--strong); }
+  .summary { margin-top: 22px; max-width: 680px; font-size: 19px; line-height: 1.55; color: var(--text2); }
+  .summary b { color: var(--text); font-weight: 400; }
+
+  .body { margin-top: 56px; padding-top: 8px; border-top: 1px solid var(--line); }
+  .body :global(h2), .block h2 {
+    margin: 40px 0 12px; font-family: var(--font-mono); font-size: 11px; font-weight: 400;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  }
+  .body :global(p), .body :global(li) { max-width: 680px; font-size: 17px; line-height: 1.65; color: var(--text2); }
+  .body :global(strong) { color: var(--text); font-weight: 400; }
+  .body :global(ul) { margin-top: 8px; display: grid; gap: 8px; }
+  .body :global(li) { position: relative; padding-left: 16px; }
+  .body :global(li::before) { content: ''; position: absolute; left: 0; top: .8em; width: 6px; height: 1px; background: var(--amber); }
+
+  .block h2 { margin-top: 56px; margin-bottom: 16px; }
+  .gallery { display: grid; gap: 16px; }
+  .gallery figure { border: 1px solid var(--line3); background: var(--surface); }
+  .gallery :global(img) { width: 100%; height: auto; }
+  video { width: 100%; border: 1px solid var(--line3); background: var(--surface); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips li { padding: 5px 9px; border: 1px solid var(--line3); font-size: 11px; color: var(--tech); }
+
+  .links { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 18px; font-size: 14px; }
+  .links a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line2); transition: border-color .2s; }
+  .links a:hover { border-color: var(--amber); }
+
+  .pager { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pager a { display: block; color: var(--strong); font-size: 17px; font-weight: 400; text-decoration: none; transition: color .2s; }
+  .pager a:hover { color: var(--amber-ink); }
+  .pager span { display: block; margin-bottom: 6px; font-size: 11px; letter-spacing: .12em; color: var(--muted); }
+  .pager a[rel='next'] { grid-column: 2; text-align: right; }
+
+  .cta { margin-top: 72px; padding-top: 56px; border-top: 1px solid var(--line); text-align: center; }
+  .cta h2 { font-size: 26px; font-weight: 400; letter-spacing: -.02em; color: var(--strong); }
+  .mail {
+    display: inline-block; margin-top: 18px; padding-bottom: 4px;
+    font-size: 22px; color: var(--amber-ink); text-decoration: none;
+    border-bottom: 1px solid var(--contactline); transition: border-color .3s;
+  }
+  .mail:hover { border-color: var(--amber); }
+
+  @media (max-width: 600px) {
+    .project { padding: 48px 20px 32px; }
+    h1 { font-size: 34px; }
+    .summary { font-size: 16px; }
+    .body :global(p), .body :global(li) { font-size: 16px; }
+    .pager { grid-template-columns: 1fr; }
+    .pager a[rel='next'] { grid-column: auto; text-align: left; }
+    .mail { font-size: 18px; }
+  }
+</style>
