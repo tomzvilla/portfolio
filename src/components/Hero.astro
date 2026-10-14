@@ -1,0 +1,101 @@
+---
+import HeroNetwork from './HeroNetwork.astro';
+import { EMAIL, GITHUB, LINKEDIN } from '../config';
+import type { Lang } from '../i18n/types';
+import { cvHref, mailtoHref, t } from '../i18n/utils';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const h = d.hero;
+const words = (s: string) => s.split(' ').filter(Boolean).map((w) => ({ w, accent: false }));
+const tokens = [...words(h.titleBefore), { w: h.titleAccent, accent: true }, ...words(h.titleAfter)];
+---
+<section class="hero" id={d.ids.home} data-hero data-rv aria-labelledby="hero-title">
+  <div class="glow" aria-hidden="true"></div>
+  <HeroNetwork />
+  <div class="inner">
+    <p class="k mono rv">{h.kicker}</p>
+    <h1 id="hero-title">
+      {tokens.map(({ w, accent }, i) => (
+        <Fragment><span class="w"><i style={`--d:${250 + i * 60}ms`}>{accent ? <b>{w}</b> : w}</i></span>{i < tokens.length - 1 && ' '}</Fragment>
+      ))}
+    </h1>
+    <p class="sub rv" style="--d:500ms">{h.sub}</p>
+    <div class="cta rv" style="--d:650ms">
+      <a class="m" href={mailtoHref(lang)}>{EMAIL} <span class="mono">{h.write}</span></a>
+      <ul class="sm">
+        <li><a href={LINKEDIN} rel="me">LinkedIn</a></li>
+        <li><a href={GITHUB} rel="me">GitHub</a></li>
+        <li><a href={cvHref(lang)} type="application/pdf">{h.cv}</a></li>
+      </ul>
+    </div>
+    <dl class="now">
+      {h.facts.map((f, i) => (
+        <div class="rv" style={`--d:${800 + i * 100}ms`}><dt class="mono">{f.k}</dt><dd>{f.v}</dd></div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; overflow: hidden; }
+  .inner { position: relative; z-index: 1; max-width: 960px; padding: 110px 48px 90px; }
+  .k { font-size: 12px; color: var(--muted); letter-spacing: .08em; margin-bottom: 26px; }
+  h1 {
+    font-size: 58px; font-weight: 300; line-height: 1.05; letter-spacing: -.03em;
+    color: var(--strong); max-width: 880px;
+  }
+  h1 b { font-weight: 400; color: var(--amber); }
+  .w { display: inline-block; overflow: hidden; vertical-align: bottom; }
+  .w i { display: inline-block; font-style: normal; transition: transform .8s var(--ease); transition-delay: var(--d, 0ms); }
+  :global(.js) .w i { transform: translateY(110%); }
+  :global(.js) .hero:global(.in) .w i { transform: none; }
+
+  .sub { margin-top: 26px; font-size: 19px; line-height: 1.55; color: var(--text2); max-width: 620px; font-weight: 300; }
+
+  .cta { margin-top: 36px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+  .m {
+    position: relative; overflow: hidden;
+    display: inline-flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    padding: 12px 18px; border: 1px solid var(--line2); border-radius: 4px;
+    font-size: 17px; font-weight: 400; color: var(--strong); text-decoration: none;
+    transition: border-color .25s, transform .25s, box-shadow .25s;
+  }
+  .m::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, var(--amber-a12), transparent);
+    transform: translateX(-100%); transition: transform .6s;
+  }
+  .m:hover { border-color: var(--amber); transform: translateY(-1px); box-shadow: 0 8px 30px var(--amber-a12); }
+  .m:hover::before { transform: translateX(100%); }
+  .m .mono { font-size: 13px; color: var(--muted); }
+  .sm { display: flex; gap: 18px; font-size: 13px; }
+  .sm a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line2); transition: border-color .2s; }
+  .sm a:hover { border-color: var(--amber); }
+
+  .now {
+    margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
+    display: flex; gap: 40px; font-size: 13px;
+  }
+  .now dt { font-size: 11px; letter-spacing: .12em; color: var(--muted); }
+  .now dd { margin-top: 3px; color: var(--text); font-weight: 400; }
+
+  .glow {
+    position: absolute; right: -120px; top: 40px; width: 520px; height: 520px; border-radius: 50%;
+    background: radial-gradient(circle, var(--amber-a09), transparent 60%);
+    pointer-events: none; animation: float 9s ease-in-out infinite;
+  }
+
+  @media (max-width: 600px) {
+    .inner { padding: 64px 20px 56px; }
+    h1 { font-size: 36px; }
+    .sub { font-size: 16px; }
+    .m { font-size: 14px; width: 100%; justify-content: space-between; }
+    .now { flex-direction: column; gap: 14px; }
+    .glow { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .w i { transform: none; }
+  }
+</style>
