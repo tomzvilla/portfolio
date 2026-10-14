@@ -315,7 +315,6 @@ const entryFor = (slug: string) => {
       visible = true;
       graph.classList.add('in');
       setTimeout(draw, reduce ? 0 : 200);
-      setTimeout(() => graph.classList.add('settled'), reduce ? 0 : 100 + nodes.size * 50 + 600);
     }, { threshold: 0.2 }).observe(graph);
     new ResizeObserver(() => { if (visible) draw(); }).observe(graph);
     document.fonts?.ready.then(() => { if (visible) draw(); });
@@ -408,15 +407,14 @@ const entryFor = (slug: string) => {
   :global(html:not(.js)) .svc, :global(html:not(.js)) .nd { cursor: default; }
   :global(html:not(.js)) .nd { pointer-events: none; }
 
-  /* entrada escalonada; .settled la quita para que .hi pueda desplazar */
-  :global(.js) .graph .nd { opacity: 0; transform: translateY(10px); }
+  .nd.hi { transform: translateX(3px); }
+
+  /* entrada escalonada: cada nodo sube hasta su propio estado, ya encendido o atenuado */
+  :global(.js) .graph:not(:global(.in)) .nd { opacity: 0; transform: translateY(10px); }
   :global(.js) .graph:global(.in) .nd {
-    animation: ndin .6s var(--ease) forwards;
+    animation: ndin .6s var(--ease) backwards;
     animation-delay: calc(100ms + var(--i) * 50ms);
   }
-  :global(.js) .graph:global(.settled) .nd { animation: none; opacity: 1; transform: none; }
-  :global(.js) .graph:global(.settled) .nd.hi { transform: translateX(3px); }
-  :global(.js) .graph:global(.settled) .nd.dim { opacity: .3; }
 
   /* todos los contenidos comparten celda: el panel mide lo que el más alto y no salta al cambiar */
   .panel {
@@ -484,8 +482,8 @@ const entryFor = (slug: string) => {
     .techcol .colh { width: 100%; }
     .nd.tech { pointer-events: none; }
     .nd.sel { box-shadow: inset 3px 0 0 var(--amber); }
-    :global(.js) .graph:global(.settled) .nd.hi { transform: translateX(4px); }
-    .nd.dim, :global(.js) .graph:global(.settled) .nd.dim { opacity: .35; }
+    .nd.hi { transform: translateX(4px); }
+    .nd.dim { opacity: .35; }
 
     .mcta {
       display: flex; justify-content: space-between; align-items: center; gap: 14px;
