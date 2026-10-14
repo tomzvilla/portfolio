@@ -257,6 +257,7 @@ const entryFor = (slug: string) => {
   .svc.on::after { width: 100%; }
   .svc .t { display: block; padding-right: 18px; font-size: 17px; color: var(--strong); font-weight: 500; }
   .svc .d { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); line-height: 1.45; font-weight: 300; }
+  .svc.on .d { color: var(--text2); }
   .svc .c { display: block; margin-top: 12px; font-size: 11px; color: var(--amber-ink); }
   .svc .num { position: absolute; right: 14px; top: 14px; font-size: 11px; color: var(--faint); transition: color .25s; }
   .svc.on .num { color: var(--amber-ink); }
@@ -281,12 +282,17 @@ const entryFor = (slug: string) => {
     transition: border-color .3s, background .3s, opacity .3s, transform .3s, color .3s;
   }
   .nd small { display: block; margin-top: 2px; font-size: 10px; color: var(--muted); }
+  .nd.hi small { color: var(--text2); }
   .nd:hover { border-color: var(--muted2); }
   .nd.hi { border-color: var(--amber); color: var(--strong); background: var(--surfacehi); }
   .nd.dim { opacity: .3; }
   .nd.svcn { font-family: var(--font-sans); font-size: 13px; padding: 11px 13px; }
   .nd.tech { width: auto; align-self: flex-start; font-size: 11px; padding: 5px 9px; color: var(--tech); background: transparent; }
   .nd.tech.hi { background: var(--surfacehi); }
+
+  /* sin JS los botones del mapa no hacen nada: que no parezcan clicables */
+  :global(html:not(.js)) .svc, :global(html:not(.js)) .nd { cursor: default; }
+  :global(html:not(.js)) .nd { pointer-events: none; }
 
   /* entrada escalonada; .settled la quita para que .hi pueda desplazar */
   :global(.js) .graph .nd { opacity: 0; transform: translateY(10px); }
