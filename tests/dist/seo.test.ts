@@ -1,9 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { SITE } from '../../src/config';
 import { WORK_SLUGS } from '../../src/data/graph';
 import { exists, fileFor, page } from './helpers';
 
-const SITE = 'https://tomzv.com.ar';
 const png = (route: string) => {
   const buf = readFileSync(fileFor(route));
   return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) };

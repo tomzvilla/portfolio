@@ -14,6 +14,7 @@ describe('presupuesto de JS', () => {
       .filter((s) => !s.getAttribute('src'))
       .map((s) => Buffer.from(s.text));
     const total = [...bundles, ...inline].reduce((sum, b) => sum + gzipSync(b).length, 0);
+    expect(total).toBeGreaterThan(0);
     expect(total).toBeLessThan(15_000);
   });
 });

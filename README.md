@@ -16,6 +16,8 @@ Spec: `docs/superpowers/specs/2026-10-13-portfolio-redesign-design.md`.
 | `npm run og` | Regenera las imágenes Open Graph |
 | `npm run verify` | Todo lo anterior antes de deployar |
 
+`check:names` solo lee texto: no mira dentro de PDFs ni imágenes. Cuando cambien los CV de `public/cv/` o las capturas, revisarlos a mano. Si cambia el copy del hero, volver a correr `npm run og`.
+
 ## Dónde está cada cosa
 
 - Textos de la home: `src/i18n/es.ts` y `src/i18n/en.ts`.
