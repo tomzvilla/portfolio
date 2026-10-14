@@ -9,11 +9,17 @@ function runInit({ stored = null, prefersLight = false, storageThrows = false }:
   const classes = new Set<string>();
   const attrs: Record<string, string> = {};
   const documentElement = {
-    classList: { add: (c: string) => classes.add(c) },
+    classList: {
+      add: (c: string) => classes.add(c),
+      remove: (c: string) => classes.delete(c),
+      contains: (c: string) => classes.has(c),
+    },
     setAttribute: (k: string, v: string) => { attrs[k] = v; },
   };
+  const timers: Array<() => void> = [];
   const matchMedia = (q: string) => ({ matches: q.includes('light') && prefersLight });
-  const ctx: Record<string, unknown> = { document: { documentElement }, matchMedia };
+  const setTimeout = (fn: () => void) => { timers.push(fn); return timers.length; };
+  const ctx: Record<string, unknown> = { document: { documentElement }, matchMedia, setTimeout };
   ctx.window = ctx;
   Object.defineProperty(ctx, 'localStorage', {
     get() {
@@ -22,7 +28,7 @@ function runInit({ stored = null, prefersLight = false, storageThrows = false }:
     },
   });
   runInNewContext(THEME_INIT, ctx);
-  return { classes, theme: attrs['data-theme'] };
+  return { classes, theme: attrs['data-theme'], timers };
 }
 
 function fakeRoot(theme?: string) {
@@ -55,6 +61,23 @@ describe('THEME_INIT', () => {
   it('no rompe si localStorage está bloqueado', () => {
     const r = runInit({ storageThrows: true, prefersLight: true });
     expect(r.theme).toBe('light');
+    expect(r.classes.has('js')).toBe(true);
+  });
+});
+
+describe('THEME_INIT: red de seguridad si el bundle no carga', () => {
+  it('quita `js` si el temporizador vence y nunca llegó rv-ready', () => {
+    const r = runInit({});
+    expect(r.classes.has('js')).toBe(true);
+    expect(r.timers).toHaveLength(1);
+    r.timers[0]();
+    expect(r.classes.has('js')).toBe(false);
+  });
+
+  it('mantiene `js` si el bundle ya marcó rv-ready', () => {
+    const r = runInit({});
+    r.classes.add('rv-ready');
+    r.timers[0]();
     expect(r.classes.has('js')).toBe(true);
   });
 });

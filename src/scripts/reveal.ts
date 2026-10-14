@@ -1,5 +1,6 @@
 /** Un único IntersectionObserver para todo `.rv` y `[data-rv]`: agrega `.in` una sola vez. */
 export function initReveal(): void {
+  document.documentElement.classList.add('rv-ready');
   const els = document.querySelectorAll<HTMLElement>('.rv, [data-rv]');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce || !('IntersectionObserver' in window)) {

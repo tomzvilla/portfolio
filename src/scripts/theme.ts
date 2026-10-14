@@ -5,9 +5,11 @@ type ThemeRoot = Pick<HTMLElement, 'getAttribute' | 'setAttribute'>;
 
 /**
  * Script inline del <head>: marca que hay JS (habilita las animaciones de entrada)
- * y aplica el tema antes del primer pintado. Se inyecta como string: debe ser autocontenido.
+ * y aplica el tema antes del primer pintado. Si el bundle no carga (no llega `rv-ready`),
+ * a los 3 s quita `js` para que el contenido oculto para animar vuelva a verse.
+ * Se inyecta como string: debe ser autocontenido.
  */
-export const THEME_INIT = `(function(){var d=document.documentElement;d.classList.add('js');var t=null;try{t=localStorage.getItem('${THEME_KEY}')}catch(e){}if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}d.setAttribute('data-theme',t)})();`;
+export const THEME_INIT = `(function(){var d=document.documentElement;d.classList.add('js');var t=null;try{t=localStorage.getItem('${THEME_KEY}')}catch(e){}if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}d.setAttribute('data-theme',t);setTimeout(function(){if(!d.classList.contains('rv-ready'))d.classList.remove('js')},3000)})();`;
 
 export function currentTheme(root: ThemeRoot = document.documentElement): Theme {
   return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
