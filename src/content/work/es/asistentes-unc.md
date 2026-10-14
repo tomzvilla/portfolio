@@ -1,6 +1,6 @@
 ---
 title: "Asistentes para la UNC"
-client: "Prosecretaría de Informática · UNC"
+client: "PSI · UNC"
 period: "2025"
 order: 2
 role: "IA · Backend"
@@ -12,7 +12,7 @@ confidential: false
 
 ## Contexto
 
-La Prosecretaría de Informática de la Universidad Nacional de Córdoba recibe miles de consultas repetidas de estudiantes sobre cuentas, accesos y trámites. Las respuestas ya existen, repartidas en manuales y preguntas frecuentes.
+La Prosecretaría de Informática (PSI) de la Universidad Nacional de Córdoba recibe miles de consultas repetidas de estudiantes sobre cuentas, accesos y trámites. Las respuestas ya existen, repartidas en manuales y preguntas frecuentes.
 
 ## Qué construí
 

@@ -1,6 +1,6 @@
 ---
 title: "Assistants for the UNC"
-client: "IT Office · UNC"
+client: "PSI · UNC"
 period: "2025"
 order: 2
 role: "AI · Backend"
@@ -12,7 +12,7 @@ confidential: false
 
 ## Context
 
-The IT Office of the National University of Córdoba gets thousands of repeated questions from students about accounts, access and procedures. The answers already exist, spread across manuals and FAQs.
+The IT Office (PSI) of the National University of Córdoba gets thousands of repeated questions from students about accounts, access and procedures. The answers already exist, spread across manuals and FAQs.
 
 ## What I built
 

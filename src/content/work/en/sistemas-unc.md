@@ -1,6 +1,6 @@
 ---
-title: "UNC IT Office"
-client: "National University of Córdoba"
+title: "Single sign-on and self-service"
+client: "PSI · UNC"
 period: "2023 → now"
 order: 7
 role: "Software engineer"
@@ -12,7 +12,7 @@ confidential: false
 
 ## Context
 
-Since 2023 I've worked at the IT Office (Prosecretaría de Informática) of the National University of Córdoba, the team that builds and runs the university's systems. More than 100,000 students use them every day.
+Since 2023 I've worked at the IT Office (Prosecretaría de Informática, PSI) of the National University of Córdoba, the team that builds and runs the university's systems. More than 100,000 students use them every day.
 
 ## What I built
 

@@ -32,7 +32,7 @@ export const en: Dict = {
     write: '→ write to me',
     cv: 'CV',
     facts: [
-      { k: 'SINCE 2023', v: 'IT Office · National University of Córdoba' },
+      { k: 'SINCE 2023', v: 'PSI · National University of Córdoba' },
       { k: 'ALSO', v: 'AI agent evaluation platform · European startup' },
       { k: 'OWN PROJECTS', v: 'Argentina · Colombia · Europe' },
     ],
@@ -92,7 +92,7 @@ export const en: Dict = {
             { name: "Hunter's Gallery", meta: 'complete system for a sporting goods store · solo', slug: 'hunters-gallery' },
             { name: 'Vehicle registration services', meta: 'IAM, audit, cashier · Colombia', slug: 'tramites-vehiculares' },
             { name: 'Traffic violation validation', meta: 'Colombia', slug: 'validacion-infracciones' },
-            { name: 'UNC IT Office', meta: 'authentication and self-service · 100,000+ students', slug: 'sistemas-unc' },
+            { name: 'Single sign-on and self-service', meta: 'PSI · UNC · 100,000+ students', slug: 'sistemas-unc' },
             { name: 'CienciaConecta', meta: 'Córdoba provincial government · team lead', slug: 'cienciaconecta' },
           ],
         },
@@ -119,7 +119,7 @@ export const en: Dict = {
       p4: { name: 'Traffic violation validation', sub: 'Colombia · 2025–26' },
       p5: { name: "Hunter's Gallery", sub: 'sporting goods · 2024 → now' },
       p6: { name: 'Manent', sub: 'LitusAI · 2024–25' },
-      p7: { name: 'UNC IT Office', sub: 'UNC · 2023 → now' },
+      p7: { name: 'Single sign-on and self-service', sub: 'PSI · UNC · 2023 → now' },
       p8: { name: 'CienciaConecta', sub: 'government · 2023' },
     },
     techs: {

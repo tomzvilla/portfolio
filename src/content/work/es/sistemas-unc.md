@@ -1,6 +1,6 @@
 ---
-title: "Prosecretaría de Informática"
-client: "Universidad Nacional de Córdoba"
+title: "Acceso único y autogestión"
+client: "PSI · UNC"
 period: "2023 → hoy"
 order: 7
 role: "Software engineer"
@@ -12,7 +12,7 @@ confidential: false
 
 ## Contexto
 
-Desde 2023 trabajo en la Prosecretaría de Informática de la Universidad Nacional de Córdoba, el área que desarrolla y mantiene los sistemas de la universidad. Los usan a diario más de 100.000 estudiantes.
+Desde 2023 trabajo en la Prosecretaría de Informática (PSI) de la Universidad Nacional de Córdoba, el área que desarrolla y mantiene los sistemas de la universidad. Los usan a diario más de 100.000 estudiantes.
 
 ## Qué construí
 

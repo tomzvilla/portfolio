@@ -33,6 +33,21 @@ const other = otherLang(lang);
   </nav>
 </header>
 
+<script>
+  // Los links apuntan a /#seccion para que funcionen sin JS; una vez en la sección, la URL queda limpia.
+  const clean = () => {
+    if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
+  };
+  addEventListener('hashchange', clean);
+  if (location.hash) {
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    addEventListener('load', () => {
+      target?.scrollIntoView({ behavior: 'instant' });
+      clean();
+    }, { once: true });
+  }
+</script>
+
 <style>
   .top { position: sticky; top: 0; z-index: 10; }
   nav {

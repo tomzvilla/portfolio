@@ -32,8 +32,8 @@ export const es: Dict = {
     write: '→ escribime',
     cv: 'CV',
     facts: [
-      { k: 'DESDE 2023', v: 'Prosecretaría de Informática · Universidad Nacional de Córdoba' },
-      { k: 'EN PARALELO', v: 'Plataforma de evaluación de agentes de IA · startup europea' },
+      { k: 'DESDE 2023', v: 'PSI · Universidad Nacional de Córdoba' },
+      { k: 'TAMBIÉN', v: 'Plataforma de evaluación de agentes de IA · startup europea' },
       { k: 'PROYECTOS PROPIOS', v: 'Argentina · Colombia · Europa' },
     ],
   },
@@ -92,7 +92,7 @@ export const es: Dict = {
             { name: "Hunter's Gallery", meta: 'sistema completo de una tienda de deportes · solo', slug: 'hunters-gallery' },
             { name: 'Trámites vehiculares', meta: 'IAM, auditoría, caja · Colombia', slug: 'tramites-vehiculares' },
             { name: 'Validación de infracciones', meta: 'Colombia', slug: 'validacion-infracciones' },
-            { name: 'Prosecretaría de Informática, UNC', meta: 'autenticación y autogestión · 100.000+ estudiantes', slug: 'sistemas-unc' },
+            { name: 'Acceso único y autogestión', meta: 'PSI · UNC · 100.000+ estudiantes', slug: 'sistemas-unc' },
             { name: 'CienciaConecta', meta: 'gobierno de Córdoba · líder de equipo', slug: 'cienciaconecta' },
           ],
         },
@@ -119,7 +119,7 @@ export const es: Dict = {
       p4: { name: 'Validación de infracciones', sub: 'Colombia · 2025–26' },
       p5: { name: "Hunter's Gallery", sub: 'tienda de deportes · 2024 → hoy' },
       p6: { name: 'Manent', sub: 'LitusAI · 2024–25' },
-      p7: { name: 'Prosecretaría de Informática', sub: 'UNC · 2023 → hoy' },
+      p7: { name: 'Acceso único y autogestión', sub: 'PSI · UNC · 2023 → hoy' },
       p8: { name: 'CienciaConecta', sub: 'gobierno · 2023' },
     },
     techs: {
