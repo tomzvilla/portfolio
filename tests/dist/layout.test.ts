@@ -44,6 +44,20 @@ describe('nav', () => {
     expect(text(es.querySelector('.av'))).toBe('Disponible');
   });
 
+  it('en mobile, un botón de menú abre un panel con las mismas anclas', () => {
+    for (const [route, label] of [['/', 'Secciones'], ['/en/', 'Sections']] as const) {
+      const doc = page(route);
+      const btn = doc.querySelector('button[data-menu-toggle]')!;
+      expect(btn.getAttribute('aria-label')).toBe(label);
+      expect(btn.getAttribute('aria-expanded')).toBe('false');
+      const panel = doc.getElementById(btn.getAttribute('aria-controls')!)!;
+      expect(panel.hasAttribute('hidden')).toBe(true);
+      expect(panel.querySelectorAll('a').map((a) => a.getAttribute('href'))).toEqual(
+        doc.querySelectorAll('.anchors a').map((a) => a.getAttribute('href')),
+      );
+    }
+  });
+
   it('el toggle de tema es un botón con aria-pressed', () => {
     const btn = page('/').querySelector('button[data-theme-toggle]')!;
     expect(btn.getAttribute('aria-pressed')).toBe('false');

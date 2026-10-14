@@ -19,6 +19,7 @@ export const en: Dict = {
     contact: 'Contact',
     available: 'Available',
     theme: 'Light mode',
+    menu: 'Sections',
     otherLang: 'ES',
     otherLangLabel: 'Español',
   },

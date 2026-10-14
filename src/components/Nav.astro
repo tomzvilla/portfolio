@@ -29,8 +29,14 @@ const other = otherLang(lang);
     <div class="rt">
       <span class="av"><i aria-hidden="true"></i>{d.nav.available}</span>
       <ThemeToggle lang={lang} />
+      <button class="mb" type="button" aria-label={d.nav.menu} aria-expanded="false" aria-controls="mnav" data-menu-toggle>
+        <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+      </button>
     </div>
   </nav>
+  <ul class="mnav" id="mnav" hidden>
+    {anchors.map(([id, label]) => <li><a href={`${home}#${id}`}>{label}</a></li>)}
+  </ul>
 </header>
 
 <script>
@@ -45,6 +51,25 @@ const other = otherLang(lang);
       target?.scrollIntoView({ behavior: 'instant' });
       clean();
     }, { once: true });
+  }
+
+  // Menú de secciones para pantallas angostas, donde las anclas de la barra no entran.
+  const btn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const panel = document.getElementById('mnav');
+  if (btn && panel) {
+    const setOpen = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+    };
+    btn.addEventListener('click', () => setOpen(panel.hidden));
+    panel.addEventListener('click', (e) => { if ((e.target as Element).closest('a')) setOpen(false); });
+    addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) { setOpen(false); btn.focus(); }
+    });
+    addEventListener('click', (e) => {
+      if (!panel.hidden && !(e.target as Element).closest('.top')) setOpen(false);
+    });
+    matchMedia('(min-width: 861px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
   }
 </script>
 
@@ -73,8 +98,41 @@ const other = otherLang(lang);
     content: ''; position: absolute; inset: -4px; border-radius: 50%;
     border: 1px solid var(--green); animation: ping 2s ease-out infinite;
   }
+  .mb {
+    display: none; width: 30px; height: 30px; margin-left: 10px;
+    flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    border: 1px solid var(--line2); border-radius: 999px; transition: border-color .2s;
+  }
+  .mb:hover, .mb[aria-expanded='true'] { border-color: var(--amber); }
+  .mb span { width: 12px; height: 1px; background: var(--text); transition: transform .25s var(--ease), opacity .2s; }
+  .mb[aria-expanded='true'] span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+  .mb[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
+  .mb[aria-expanded='true'] span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
+  .mnav {
+    position: absolute; top: 100%; left: 0; right: 0;
+    padding: 6px var(--px) 14px;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    box-shadow: 0 18px 30px -18px rgba(0, 0, 0, .35);
+    animation: drop .22s var(--ease);
+  }
+  .mnav[hidden] { display: none; }
+  .mnav a {
+    display: block; padding: 13px 0; font-size: 15px;
+    color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line);
+  }
+  .mnav li:last-child a { border-bottom: 0; }
+  .mnav a:hover, .mnav a:focus-visible { color: var(--amber-ink); }
+  @keyframes drop { from { opacity: 0; transform: translateY(-6px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .mnav { animation: none; }
+    .mb span { transition: none; }
+  }
   @media (max-width: 860px) {
     .anchors { display: none; }
+    :global(html.js) .mb { display: inline-flex; }
+  }
+  @media (min-width: 861px) {
+    .mnav { display: none; }
   }
   @media (max-width: 600px) {
     nav { padding-block: 14px; }

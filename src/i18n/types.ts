@@ -12,7 +12,7 @@ export interface Dict {
   nav: {
     label: string; skip: string;
     home: string; services: string; work: string; about: string; contact: string;
-    available: string; theme: string; otherLang: string; otherLangLabel: string;
+    available: string; theme: string; menu: string; otherLang: string; otherLangLabel: string;
   };
   ids: { home: string; services: string; work: string; about: string; contact: string };
   hero: {
