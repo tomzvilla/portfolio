@@ -1,13 +1,13 @@
 ---
-title: "Vehicle registration services"
+title: "Vehicle paperwork"
 client: "Colombia"
 period: "2026"
 order: 3
 featured: true
 role: "Full stack · team of 3"
 stack: ["Next.js", "TypeScript"]
-problem: "Offices that charge and reconcile by hand, with no trace of who did what."
-summary: "Portal with cashier, receipts and AI-assisted bank reconciliation; everything audited. I built the audit, the cashier and the exceptions queue."
+problem: "Offices that take and reconcile payments by hand, with no trace of who did what."
+summary: "Portal with cashier, receipts and AI-assisted bank reconciliation; everything audited. I built the audit log, the cashier module and the exceptions queue."
 confidential: false
 images:
   - src: "../../../assets/work/tramites-vehiculares/collage.png"
@@ -22,11 +22,11 @@ images:
 
 ## Context
 
-Vehicle registration offices in Colombia charged and reconciled payments by hand, with no record of who did what.
+Vehicle paperwork offices in Colombia charged and reconciled payments by hand, with no record of who did what.
 
 ## What I built
 
-In a team of three, we built a portal with identity and access management (IAM), audit, cashier, receipts and AI-assisted bank reconciliation. My part: the audit, the cashier and the exceptions queue, where a person resolves what the automatic reconciliation can't close.
+In a team of three, we built a portal with identity and access management (IAM), auditing, cashier, receipts and AI-assisted bank reconciliation. My part: the audit log, the cashier module and the exceptions queue, where a person resolves what the automatic reconciliation can't close.
 
 ## Built with
 

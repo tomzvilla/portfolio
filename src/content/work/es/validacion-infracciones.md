@@ -1,7 +1,7 @@
 ---
 title: "Validación de infracciones"
 client: "Colombia"
-period: "2025 → 26"
+period: "2025–26"
 order: 4
 role: "Frontend · equipo de 3"
 stack: ["React", "NestJS"]

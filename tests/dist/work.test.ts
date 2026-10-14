@@ -25,6 +25,6 @@ describe('sección Trabajo', () => {
     expect(text(page('/').querySelector('.work .more h3'))).toBe('Más trabajos');
     expect(text(page('/en/').querySelector('.work .more h3'))).toBe('More work');
     const manent = page('/').querySelector('a.mr[href="/trabajo/manent/"]')!;
-    expect(text(manent.querySelector('small'))).toBe('LitusAI · 2024 → 25');
+    expect(text(manent.querySelector('small'))).toBe('LitusAI · 2024–25');
   });
 });

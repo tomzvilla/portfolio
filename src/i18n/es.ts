@@ -28,13 +28,13 @@ export const es: Dict = {
     titleBefore: 'Desarrollo full stack e integraciones de IA',
     titleAccent: 'para',
     titleAfter: 'negocios.',
-    sub: 'Diseño, construyo y despliego sistemas web, asistentes con IA y automatizaciones. Lo que construí lo usan a diario más de 100.000 estudiantes, una tienda de Córdoba y equipos en Colombia y Europa.',
+    sub: 'Diseño, construyo y despliego sistemas web, asistentes con IA y automatizaciones. Trabajo en sistemas que usan más de 100.000 estudiantes, una tienda de Córdoba y equipos en Colombia y Europa.',
     write: '→ escribime',
     cv: 'CV',
     facts: [
       { k: 'DESDE 2023', v: 'PSI · Universidad Nacional de Córdoba' },
       { k: 'TAMBIÉN', v: 'Plataforma de evaluación de agentes de IA · startup europea' },
-      { k: 'PROYECTOS PROPIOS', v: 'Argentina · Colombia · Europa' },
+      { k: 'FREELANCE', v: 'Argentina · Colombia · Europa' },
     ],
   },
   services: {
@@ -50,19 +50,19 @@ export const es: Dict = {
     projectKicker: 'PROYECTO',
     projectCta: 'Ver el proyecto',
     techKicker: 'TECNOLOGÍA',
-    techBody: 'Iluminados: los proyectos donde la usé y lo que respalda.',
+    techBody: 'Se resaltan los proyectos donde la usé y los servicios que respaldan.',
     items: {
       s1: {
         title: 'Un asistente que responda por vos',
-        desc: 'Sobre tu propia información, por web o WhatsApp, sin inventar.',
+        desc: 'Responde con tu propia información, por web o WhatsApp.',
         node: 'Asistente con IA',
         panel: {
           k: 'A · ASISTENTE CON IA',
-          h: 'Un asistente que responde sobre tu información, sin inventar.',
-          p: 'Lo armo sobre lo que ya tenés (manuales, FAQ, catálogo) y lo pongo donde está tu gente: web o WhatsApp. Cuando no sabe, lo dice y deriva a una persona.',
+          h: 'Un asistente que responde con tu información y avisa cuando no sabe.',
+          p: 'Lo armo sobre lo que ya tenés (manuales, FAQ, catálogo) y lo pongo donde está tu gente: web o WhatsApp. Lo que no puede responder lo deriva a una persona.',
           items: [
             { name: 'Asistentes para la UNC', meta: 'RAG sobre manuales y FAQ · 2025', slug: 'asistentes-unc' },
-            { name: "Asistente de WhatsApp de Hunter's Gallery", meta: 'redacta, un humano aprueba · 2025 → hoy', slug: 'hunters-gallery' },
+            { name: "Asistente de WhatsApp de Hunter's Gallery", meta: 'redacta, una persona aprueba · 2025 → hoy', slug: 'hunters-gallery' },
             { name: 'Evaluación de agentes de IA', meta: 'pruebas automáticas antes de producción · 2026 → hoy', slug: 'chatbots-eval' },
           ],
         },
@@ -73,11 +73,11 @@ export const es: Dict = {
         node: 'Automati­zación',
         panel: {
           k: 'B · AUTOMATIZACIÓN',
-          h: 'Automatizo lo repetitivo para que tu equipo atienda antes y mejor.',
+          h: 'Que el sistema haga lo repetitivo y tu equipo atienda a tus clientes.',
           p: 'Cargar datos, cruzar planillas, conciliar pagos, generar comprobantes: eso lo hace el sistema. Tu equipo gana tiempo para responderle a la gente, y lo dudoso queda en una cola donde una persona decide con una sugerencia a mano.',
           items: [
             { name: 'Conciliación bancaria asistida por IA', meta: 'trámites vehiculares, Colombia · 2026', slug: 'tramites-vehiculares' },
-            { name: "Pedidos y facturación de Hunter's Gallery", meta: 'del WhatsApp a la factura ARCA · 2024 → hoy', slug: 'hunters-gallery' },
+            { name: "Pedidos y facturación de Hunter's Gallery", meta: 'del WhatsApp a la factura electrónica (ARCA) · 2024 → hoy', slug: 'hunters-gallery' },
           ],
         },
       },
@@ -87,25 +87,25 @@ export const es: Dict = {
         node: 'Sistema a medida',
         panel: {
           k: 'C · SISTEMA A MEDIDA',
-          h: 'Gestión interna con permisos por persona y el historial de cada cambio.',
+          h: 'Una herramienta de gestión a medida: cada persona ve lo que le toca y todo cambio queda registrado.',
           p: 'Relevo cómo trabaja hoy tu equipo y diseño el sistema que lo reemplaza por etapas, empezando por la planilla que más duele.',
           items: [
             { name: "Hunter's Gallery", meta: 'sistema completo de una tienda de deportes · solo', slug: 'hunters-gallery' },
             { name: 'Trámites vehiculares', meta: 'IAM, auditoría, caja · Colombia', slug: 'tramites-vehiculares' },
             { name: 'Validación de infracciones', meta: 'Colombia', slug: 'validacion-infracciones' },
-            { name: 'Acceso único y autogestión', meta: 'PSI · UNC · 100.000+ estudiantes', slug: 'sistemas-unc' },
-            { name: 'CienciaConecta', meta: 'gobierno de Córdoba · líder de equipo', slug: 'cienciaconecta' },
+            { name: 'Acceso único y autogestión', meta: 'PSI · UNC · más de 100.000 estudiantes', slug: 'sistemas-unc' },
+            { name: 'CienciaConecta', meta: 'Gobierno de Córdoba · líder de equipo', slug: 'cienciaconecta' },
           ],
         },
       },
       s4: {
         title: 'Un sitio o catálogo',
-        desc: 'Carga al instante, se ve bien en el celular y está pensado para vender o presentar lo que hacés.',
+        desc: 'Para vender o presentar lo que hacés, cómodo de leer en el celular.',
         node: 'Sitio o catálogo',
         panel: {
           k: 'D · SITIO O CATÁLOGO',
-          h: 'Un sitio que carga al instante, pensado para vender o presentar lo que hacés.',
-          p: 'Diseñado para tu negocio, sin plantillas. Si vendés, un catálogo que arma el pedido y lo manda a tu WhatsApp; si querés presentar lo que hacés, un sitio claro que se lee bien en cualquier pantalla.',
+          h: 'Un sitio o catálogo hecho para tu negocio, sin plantillas.',
+          p: 'Si vendés, un catálogo que arma el pedido y lo manda a tu WhatsApp; si querés presentar lo que hacés, un sitio claro que se adapta al celular y a la computadora.',
           items: [
             { name: "Catálogo público de Hunter's Gallery", meta: 'pedido → WhatsApp · 2025 → hoy', slug: 'hunters-gallery' },
             { name: 'Portal de CienciaConecta', meta: 'inscripción y evaluación de proyectos · 2023', slug: 'cienciaconecta' },
@@ -114,14 +114,14 @@ export const es: Dict = {
       },
     },
     projects: {
-      p1: { name: 'Evaluación de agentes de IA', sub: 'startup de IA · 2026 → hoy' },
+      p1: { name: 'Evaluación de agentes de IA', sub: 'startup europea · 2026 → hoy' },
       p2: { name: 'Asistentes para la UNC', sub: 'UNC · 2025' },
       p3: { name: 'Trámites vehiculares', sub: 'Colombia · 2026' },
       p4: { name: 'Validación de infracciones', sub: 'Colombia · 2025–26' },
       p5: { name: "Hunter's Gallery", sub: 'tienda de deportes · 2024 → hoy' },
       p6: { name: 'Manent', sub: 'LitusAI · 2024–25' },
       p7: { name: 'Acceso único y autogestión', sub: 'PSI · UNC · 2023 → hoy' },
-      p8: { name: 'CienciaConecta', sub: 'gobierno · 2023' },
+      p8: { name: 'CienciaConecta', sub: 'Gobierno de Córdoba · 2023' },
     },
     techs: {
       t1: 'Modelos de lenguaje · RAG',
@@ -143,21 +143,21 @@ export const es: Dict = {
     n: '03',
     title: 'Sobre mí',
     paragraphs: [
-      'Programo desde los diecisiete. Estudié Ingeniería en Sistemas en la <b>UTN FRC</b> y desde 2023 trabajo en la <b>Prosecretaría de Informática de la Universidad Nacional de Córdoba</b>: autenticación, gestión de usuarios y los sistemas de autogestión que usan más de 100.000 estudiantes. En 2024 empecé a tomar proyectos propios: una tienda de deportes, una startup de IA, dos sistemas para el sector de tránsito en Colombia. El detalle está en mi <a href="/cv/Villarreal-Tomas-CV-ES.pdf">CV</a>.',
+      'Programo desde los diecisiete. Estudié Ingeniería en Sistemas en la <b>UTN FRC</b> y desde 2023 trabajo en la <b>Prosecretaría de Informática (PSI) de la Universidad Nacional de Córdoba</b>: autenticación, gestión de usuarios y los sistemas de autogestión que usan más de 100.000 estudiantes. En 2024 empecé a tomar proyectos por mi cuenta: una tienda de deportes, dos startups de IA en Europa y dos sistemas para el sector de tránsito en Colombia. El detalle está en mi <a href="/cv/Villarreal-Tomas-CV-ES.pdf">CV</a>.',
       'Lo que me formó no fue el stack sino el encargo: relevar con alguien que no habla de software, traducirlo a algo construible y responder por el deploy. Eso es lo que ofrezco.',
     ],
     facts: [
       { k: 'FORMACIÓN', v: 'Ingeniería en Sistemas, UTN FRC. Mejor promedio de la promoción.' },
       { k: 'PREMIO', v: 'Ing. Isidoro Marín 2024, Academia Nacional de Ingeniería.' },
       { k: 'IDIOMAS', v: 'Español nativo · Inglés C2.' },
-      { k: 'CÓMO TRABAJO', v: 'Primera charla sin costo. Propuesta cerrada. Entregas por etapas. Soporte después.' },
+      { k: 'CÓMO TRABAJO', v: 'Primera charla sin costo. Propuesta cerrada en alcance y precio. Entregas por etapas. Soporte después de la entrega.' },
       { k: 'UBICACIÓN', v: 'Córdoba, Argentina · remoto.' },
     ],
   },
   contact: {
     title: '¿Tenés algo entre manos?',
     replies: 'Respondo en el día.',
-    also: 'También en',
+    also: 'Me encontrás también en',
     and: 'y',
   },
   footer: {

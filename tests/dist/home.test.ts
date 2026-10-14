@@ -38,6 +38,6 @@ describe('home completa', () => {
     expect(contact.querySelector('a.big')?.getAttribute('href')).toBe(
       'mailto:villarrealtomas@hotmail.com?subject=Consulta%20desde%20el%20portfolio',
     );
-    expect(text(contact.querySelector('p'))).toBe('Respondo en el día. También en LinkedIn y GitHub.');
+    expect(text(contact.querySelector('p'))).toBe('Respondo en el día. Me encontrás también en LinkedIn y GitHub.');
   });
 });

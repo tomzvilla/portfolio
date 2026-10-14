@@ -1,7 +1,7 @@
 ---
 title: "Traffic violation validation"
 client: "Colombia"
-period: "2025 → 26"
+period: "2025–26"
 order: 4
 role: "Frontend · team of 3"
 stack: ["React", "NestJS"]

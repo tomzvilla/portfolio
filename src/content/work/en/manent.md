@@ -1,7 +1,7 @@
 ---
 title: "Manent"
 client: "LitusAI"
-period: "2024 → 25"
+period: "2024–25"
 order: 6
 role: "Full stack"
 stack: []

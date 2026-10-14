@@ -19,7 +19,7 @@ const videos = import.meta.glob<string>('/src/assets/work/*/*.webm', { query: '?
 const videoSrc = data.video ? videos[`/src/assets/work/${slug}/${data.video}`] : undefined;
 if (data.video && !videoSrc) throw new Error(`No existe src/assets/work/${slug}/${data.video}`);
 ---
-<Base lang={lang} title={`${data.title} · ${AUTHOR}`} description={`${data.problem} ${data.summary}`}>
+<Base lang={lang} title={`${data.title} · ${AUTHOR}`} description={data.summary}>
   <article class="project">
     <a class="back mono" href={`${homePath(lang)}#${d.ids.work}`}>{p.back}</a>
     <p class="k mono rv">{data.client} · {data.period} · {data.role}</p>

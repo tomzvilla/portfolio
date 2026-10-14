@@ -13,18 +13,13 @@ confidential: true
 
 ## Contexto
 
-Una startup europea construye herramientas para que las empresas puedan confiar en sus agentes de IA: evaluarlos antes de salir a producción y controlarlos una vez que están frente a los usuarios.
+Una startup europea construye herramientas para que las empresas puedan confiar en los agentes de IA que ponen frente a sus clientes.
 
 ## Qué construí
 
-Trabajo en el desarrollo full stack de su plataforma de evaluación: la interfaz, la API y el modelo de datos. La plataforma corre miles de pruebas automáticas contra un agente, agrupadas por categoría de riesgo:
+Trabajo en el desarrollo full stack de su plataforma de evaluación: la interfaz, la API y el modelo de datos. La plataforma prueba un agente de forma automática y agrupa lo que encuentra por tipo de riesgo: respuestas inventadas, intentos de que se salte sus reglas, datos personales que no debería revelar y desvíos de lo que la empresa le permite.
 
-- **Respuestas inventadas:** el agente afirma algo que no está en sus fuentes.
-- **Inyección de instrucciones:** alguien intenta que ignore sus reglas.
-- **Filtración de datos personales:** el agente revela información que no debería.
-- **Cumplimiento de políticas:** el agente se sale de lo que la empresa le permite.
-
-Cada resultado queda puntuado, clasificado y trazable, para que lo revisen tanto ingeniería como cumplimiento.
+Cada falla queda registrada para que la revisen tanto el equipo técnico como el de cumplimiento.
 
 ## Con qué
 
@@ -32,4 +27,4 @@ TypeScript, React y Node.
 
 ## Resultado
 
-Un producto en beta privada, en desarrollo desde 2026, que encuentra las fallas de un agente antes de que las encuentren sus usuarios.
+Una plataforma que busca las fallas de un agente antes de que las encuentren sus usuarios. Hoy es mi trabajo principal.

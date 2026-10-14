@@ -6,21 +6,21 @@ order: 5
 featured: true
 role: "Todo el stack · solo"
 stack: ["Next.js", "Node", "MongoDB"]
-problem: "Una tienda que vendía por un WhatsApp personal sin registrar nada."
-summary: "Hoy tiene catálogo, gestión interna, facturación con ARCA y un asistente que redacta respuestas para que un humano apruebe."
+problem: "Una tienda que vendía por un WhatsApp personal, sin registrar nada."
+summary: "Hoy tiene catálogo, gestión interna, facturación con ARCA y un asistente que redacta respuestas para que una persona las apruebe."
 confidential: false
 links:
   - label: "huntersgallery.com.ar"
     href: "https://huntersgallery.com.ar"
 images:
   - src: "../../../assets/work/hunters-gallery/collage.png"
-    alt: "Pantallas del sitio público de Hunter's Gallery: portada, catálogo, ficha de producto y guía de compra para principiantes"
+    alt: "Pantallas del sitio público de Hunter's Gallery: portada, catálogo de accesorios y dos fichas de producto, una funda y una pistolera"
   - src: "../../../assets/work/hunters-gallery/inicio.png"
     alt: "Portada del sitio público de Hunter's Gallery"
   - src: "../../../assets/work/hunters-gallery/catalogo.png"
-    alt: "Catálogo público de Hunter's Gallery con filtros por tipo, marca y condición"
+    alt: "Catálogo de accesorios de Hunter's Gallery con filtros por marca y categoría"
   - src: "../../../assets/work/hunters-gallery/producto.png"
-    alt: "Ficha de producto con especificaciones técnicas y botón para agregar al carrito"
+    alt: "Ficha de una funda con especificaciones y botón para consultar por WhatsApp"
 ---
 
 ## Contexto
@@ -41,4 +41,4 @@ Next.js, Node y MongoDB, con modelos de lenguaje para el asistente.
 
 ## Resultado
 
-La tienda pasó de un chat personal a un sistema con catálogo, registro y facturación. Sigo a cargo del desarrollo desde 2024. Las capturas son del sitio público; el sistema interno no se muestra.
+La tienda pasó de un chat personal a un sistema con catálogo, registro y facturación. Estoy a cargo del desarrollo desde 2024. Las capturas son del sitio público; el sistema interno no se muestra.
