@@ -1,98 +1,120 @@
----
-import { createBodies, EDGES, edgePath, nodeRadius, VIEW } from '../scripts/hero-physics';
-
-const bodies = createBodies();
----
-<div class="vec" aria-hidden="true">
-  <svg viewBox={`0 0 ${VIEW.w} ${VIEW.h}`} preserveAspectRatio="xMaxYMid meet" focusable="false">
-    {EDGES.map((e, i) => <path d={edgePath(bodies, e)} style={`animation-delay:${(0.3 + i * 0.1).toFixed(2)}s`} />)}
-    {bodies.map((b, i) => <circle cx={b.x} cy={b.y} r={nodeRadius(i)} style={`animation-delay:${(0.15 + i * 0.07).toFixed(2)}s`} />)}
-  </svg>
-</div>
+<div class="vec" aria-hidden="true"><canvas></canvas></div>
 
 <script>
-  import { bfsDepths, createBodies, EDGES, edgePath, nearest, PHYS, step, type Point } from '../scripts/hero-physics';
+  import { breathe, FIELD, layoutField, step, type Field, type Point, type Ring } from '../scripts/hero-field';
 
   const vec = document.querySelector<HTMLElement>('.vec');
   const hero = vec?.closest<HTMLElement>('[data-hero]');
-  const svg = vec?.querySelector('svg');
+  const canvas = vec?.querySelector('canvas');
+  const ctx = canvas?.getContext('2d');
 
-  if (vec && hero && svg) {
-    const paths = [...svg.querySelectorAll('path')];
-    const circles = [...svg.querySelectorAll('circle')];
-    const shapes = [...paths, ...circles];
-    const markShown = () => shapes.forEach((el) => el.classList.add('shown'));
+  if (vec && hero && canvas && ctx) {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const mobile = matchMedia('(max-width: 600px)');
+    const root = document.documentElement;
+    let field: Field = { cols: 0, rows: 0, dots: [] };
+    let w = 0;
+    let h = 0;
+    let colors = { dot: '', hot: '' };
+    let cursor: Point | null = null;
+    let rings: Ring[] = [];
+    let visible = true;
+    let raf = 0;
+    const t0 = performance.now();
 
-    if (reduce) {
-      markShown();
-    } else {
-      shapes.forEach((el) => el.addEventListener('animationend', () => el.classList.add('shown'), { once: true }));
-      setTimeout(markShown, 2900);
+    const readColors = () => {
+      const cs = getComputedStyle(root);
+      colors = { dot: cs.getPropertyValue('--muted').trim(), hot: cs.getPropertyValue('--amber').trim() };
+    };
+    const layout = () => {
+      const r = vec.getBoundingClientRect();
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      w = r.width;
+      h = r.height;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      field = layoutField(w, h);
+    };
 
-      const bodies = createBodies();
-      let cursor: Point | null = null;
-      let active: number | null = null;
-      let raf = 0;
+    const draw = (now: number) => {
+      const t = (now - t0) / 1000;
+      const { cols, rows, dots } = field;
+      ctx.clearRect(0, 0, w, h);
+      // la lente une a los vecinos encendidos
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = colors.hot;
+      for (let j = 0; j <= rows; j++) {
+        for (let i = 0; i <= cols; i++) {
+          const p = dots[j * (cols + 1) + i];
+          if (p.glow < FIELD.linkMin) continue;
+          const right = i < cols ? dots[j * (cols + 1) + i + 1] : null;
+          const down = j < rows ? dots[(j + 1) * (cols + 1) + i] : null;
+          for (const q of [right, down]) {
+            if (!q || q.glow < FIELD.linkMin) continue;
+            ctx.globalAlpha = Math.min(p.glow, q.glow) * 0.55;
+            ctx.beginPath();
+            ctx.moveTo(p.x + p.dx, p.y + p.dy);
+            ctx.lineTo(q.x + q.dx, q.y + q.dy);
+            ctx.stroke();
+          }
+        }
+      }
+      for (const p of dots) {
+        if (p.w < 0.02 && p.glow < 0.02) continue;
+        const a = Math.min(1, p.w * (reduce ? 1 : breathe(t, p.x, p.y)) * 0.8);
+        ctx.globalAlpha = Math.max(a, p.glow);
+        ctx.fillStyle = p.glow > 0.05 ? colors.hot : colors.dot;
+        ctx.beginPath();
+        ctx.arc(p.x + p.dx, p.y + p.dy, 0.9 + p.w * 1.1 + p.glow * 1.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    };
 
-      const render = () => {
-        EDGES.forEach((e, i) => paths[i].setAttribute('d', edgePath(bodies, e)));
-        bodies.forEach((b, i) => {
-          circles[i].setAttribute('cx', b.x.toFixed(1));
-          circles[i].setAttribute('cy', b.y.toFixed(1));
-        });
-      };
-      const loop = () => {
-        const moving = step(bodies, cursor);
-        render();
-        raf = moving ? requestAnimationFrame(loop) : 0;
-      };
-      const kick = () => {
-        if (!raf) raf = requestAnimationFrame(loop);
-      };
-      const setActive = (i: number | null) => {
-        active = i;
-        paths.forEach((p, k) => p.classList.toggle('on', i !== null && EDGES[k].includes(i)));
-        circles.forEach((c, k) => c.classList.toggle('hi', k === i));
-      };
-      const toSvg = (e: MouseEvent): Point | null => {
-        const m = svg.getScreenCTM();
-        if (!m) return null;
-        const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse());
-        return { x: p.x, y: p.y };
-      };
+    const frame = (now: number) => {
+      rings = rings.filter((r) => now - r.t < FIELD.ringMs);
+      step(field, cursor, rings, now);
+      draw(now);
+      raf = !reduce && visible && !mobile.matches && !document.hidden ? requestAnimationFrame(frame) : 0;
+    };
+    const start = () => {
+      if (!raf) raf = requestAnimationFrame(frame);
+    };
 
+    readColors();
+    layout();
+    start();
+
+    new ResizeObserver(() => {
+      layout();
+      start();
+    }).observe(vec);
+    new MutationObserver(() => {
+      readColors();
+      start();
+    }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible) start();
+    }).observe(hero);
+    document.addEventListener('visibilitychange', start);
+
+    if (!reduce) {
+      const local = (e: MouseEvent): Point => {
+        const r = canvas.getBoundingClientRect();
+        return { x: e.clientX - r.left, y: e.clientY - r.top };
+      };
       hero.addEventListener('mousemove', (e) => {
         if (mobile.matches) return;
-        const pt = toSvg(e);
-        if (!pt) return;
-        cursor = pt;
-        const n = nearest(bodies, pt, PHYS.hoverRadius);
-        if (n !== active) setActive(n);
-        kick();
+        cursor = local(e);
       });
       hero.addEventListener('mouseleave', () => {
         cursor = null;
-        setActive(null);
-        kick();
       });
       hero.addEventListener('click', (e) => {
         if (mobile.matches) return;
-        const pt = toSvg(e);
-        if (!pt) return;
-        const start = nearest(bodies, pt, PHYS.clickRadius);
-        if (start === null) return;
-        bfsDepths(start).forEach((depth, i) => {
-          if (depth < 0) return;
-          setTimeout(() => {
-            circles[i].classList.add('wv');
-            bodies[i].vx += (Math.random() - 0.5) * 6;
-            bodies[i].vy += (Math.random() - 0.5) * 6;
-            kick();
-            setTimeout(() => circles[i].classList.remove('wv'), PHYS.waveHoldMs);
-          }, depth * PHYS.waveStepMs);
-        });
+        rings.push({ ...local(e), t: performance.now() });
       });
     }
   }
@@ -100,33 +122,15 @@ const bodies = createBodies();
 
 <style>
   .vec {
-    position: absolute; top: 0; bottom: 0; right: var(--px); z-index: 0;
-    width: min(400px, 32vw);
+    position: absolute; top: 24px; bottom: 24px; right: var(--px); z-index: 0;
+    width: min(480px, 38vw);
     pointer-events: none;
-    mask-image: linear-gradient(90deg, transparent, var(--strong) 30%);
-    -webkit-mask-image: linear-gradient(90deg, transparent, var(--strong) 30%);
   }
+  canvas { display: block; width: 100%; height: 100%; }
   :global(.js) .vec { opacity: 0; transition: opacity 1.2s .3s; }
   :global(.js [data-hero].in) .vec { opacity: 1; }
-  svg { width: 100%; height: 100%; }
-
-  path { fill: none; stroke: var(--line2); stroke-width: 1; transition: stroke .3s; }
-  :global(.js) path:not(.shown) {
-    stroke-dasharray: 900; stroke-dashoffset: 900;
-    animation: drawin 2.2s var(--ease) forwards;
-  }
-  path.on { stroke: var(--amber); stroke-dasharray: 5 7; animation: flow 1.2s linear infinite; }
-
-  circle { fill: var(--bg); stroke: var(--vecnode); stroke-width: 1.2; transition: stroke .3s, fill .3s; }
-  :global(.js) circle:not(.shown) { opacity: 0; animation: ndin .6s forwards; }
-  circle.hi { stroke: var(--amber); fill: var(--amber); }
-  circle.wv { stroke: var(--amber); fill: var(--surfacehi); }
 
   @media (max-width: 600px) {
     .vec { display: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    :global(.js) path:not(.shown) { stroke-dashoffset: 0; stroke-dasharray: none; }
-    :global(.js) circle:not(.shown) { opacity: 1; }
   }
 </style>

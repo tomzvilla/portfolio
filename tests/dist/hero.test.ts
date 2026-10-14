@@ -28,7 +28,7 @@ describe('hero', () => {
     expect(es.querySelectorAll('.hero .now dt').map(text)).toEqual(['DESDE 2023', 'EN PARALELO', 'PROYECTOS PROPIOS']);
     const vec = es.querySelector('.vec')!;
     expect(vec.getAttribute('aria-hidden')).toBe('true');
-    expect(vec.querySelectorAll('circle')).toHaveLength(11);
-    expect(vec.querySelectorAll('path')).toHaveLength(11);
+    expect(vec.querySelectorAll('canvas')).toHaveLength(1);
+    expect(vec.querySelectorAll('[tabindex], a, button')).toHaveLength(0);
   });
 });
