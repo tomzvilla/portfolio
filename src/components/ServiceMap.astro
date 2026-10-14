@@ -1,0 +1,350 @@
+---
+import { DEFAULT_SERVICE, projects, services, supportCount, techIds } from '../data/graph';
+import type { Lang } from '../i18n/types';
+import { mailtoHref, t, workPath } from '../i18n/utils';
+import { getWork, slugOf } from '../lib/work';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const s = d.services;
+const pressed = (on: boolean) => (on ? 'true' : 'false');
+const bySlug = new Map((await getWork(lang)).map((e) => [slugOf(e), e]));
+const entryFor = (slug: string) => {
+  const e = bySlug.get(slug);
+  if (!e) throw new Error(`Falta src/content/work/${lang}/${slug}.md`);
+  return e;
+};
+---
+<section class="map" id={d.ids.services} aria-labelledby="services-title" data-service-map>
+  <div class="sh rv"><span class="n">{s.n}</span><h2 id="services-title">{s.title}</h2></div>
+  <p class="lead rv" style="--d:100ms">{s.lead}</p>
+
+  <div class="svcs">
+    {services.map((sv, i) => (
+      <button
+        type="button"
+        class:list={['svc', 'rv', { on: sv.id === DEFAULT_SERVICE }]}
+        style={`--d:${150 + i * 100}ms`}
+        data-id={sv.id}
+        aria-pressed={pressed(sv.id === DEFAULT_SERVICE)}
+      >
+        <span class="num mono" aria-hidden="true">{sv.letter}</span>
+        <span class="t">{s.items[sv.id].title}</span>
+        <span class="d">{s.items[sv.id].desc}</span>
+        <span class="c mono">{s.count(supportCount(sv.id))}</span>
+      </button>
+    ))}
+  </div>
+
+  <div class="gwrap">
+    <div class="graph" data-rv>
+      <svg aria-hidden="true" focusable="false"></svg>
+      <div class="col svcol">
+        <p class="colh mono">{s.colServices}</p>
+        {services.map((sv, i) => (
+          <button type="button" class="nd svcn" data-id={sv.id} aria-pressed={pressed(sv.id === DEFAULT_SERVICE)} style={`--i:${i}`}>
+            {s.items[sv.id].node}
+          </button>
+        ))}
+      </div>
+      <div class="col prjcol">
+        <p class="colh mono">{s.colProjects}</p>
+        {projects.map((p, i) => (
+          <button type="button" class="nd mono" data-id={p.id} aria-pressed="false" style={`--i:${4 + i}`}>
+            {s.projects[p.id].name} <small>{s.projects[p.id].sub}</small>
+          </button>
+        ))}
+      </div>
+      <div class="col techcol">
+        <p class="colh mono">{s.colTechs}</p>
+        {techIds.map((tid, i) => (
+          <button type="button" class="nd tech mono" data-id={tid} aria-pressed="false" style={`--i:${12 + i}`}>
+            {s.techs[tid]}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="panel rv" style="--d:300ms" aria-live="polite">
+      {services.map((sv) => {
+        const pn = s.items[sv.id].panel;
+        return (
+          <div class="inner" data-panel={sv.id} hidden={sv.id !== DEFAULT_SERVICE}>
+            <p class="k mono">{pn.k}</p>
+            <h3>{pn.h}</h3>
+            <p class="p">{pn.p}</p>
+            <ul>
+              {pn.items.map((it) => (
+                <li><a href={workPath(lang, it.slug)}>{it.name}</a><span class="mono">{it.meta}</span></li>
+              ))}
+            </ul>
+            <p class="cta"><a href={mailtoHref(lang)}>{s.caseCta} <em aria-hidden="true">→</em></a></p>
+          </div>
+        );
+      })}
+      {projects.map((p) => {
+        const e = entryFor(p.slug);
+        return (
+          <div class="inner" data-panel={p.id} hidden>
+            <p class="k mono">{s.projectKicker}</p>
+            <h3>{e.data.title}</h3>
+            <p class="p">{e.data.problem} {e.data.summary}</p>
+            <p class="cta"><a href={workPath(lang, p.slug)}>{s.projectCta} <em aria-hidden="true">→</em></a></p>
+          </div>
+        );
+      })}
+      {techIds.map((tid) => (
+        <div class="inner" data-panel={tid} hidden>
+          <p class="k mono">{s.techKicker}</p>
+          <h3>{s.techs[tid]}</h3>
+          <p class="p">{s.techBody}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+  <p class="hint mono" aria-hidden="true">{s.hint}</p>
+</section>
+
+<script>
+  import { activeSet, DEFAULT_SERVICE, edges, isEdgeActive, type NodeId } from '../data/graph';
+  import { curve } from '../scripts/curve';
+  import { createSwitcher } from '../scripts/switcher';
+
+  const root = document.querySelector<HTMLElement>('[data-service-map]');
+  const graph = root?.querySelector<HTMLElement>('.graph');
+  const svg = graph?.querySelector('svg');
+  const panel = root?.querySelector<HTMLElement>('.panel');
+
+  if (root && graph && svg && panel) {
+    const nodes = new Map(
+      [...graph.querySelectorAll<HTMLButtonElement>('.nd')].map((n) => [n.dataset.id as NodeId, n]),
+    );
+    const cards = [...root.querySelectorAll<HTMLButtonElement>('.svc')];
+    const variants = [...panel.querySelectorAll<HTMLElement>('[data-panel]')];
+    const mobile = matchMedia('(max-width: 600px)');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const EDGES = edges();
+    let paths: SVGPathElement[] = [];
+    let visible = false;
+    let drawnOnce = false;
+    let locked: NodeId = DEFAULT_SERVICE;
+    let shown: NodeId = DEFAULT_SERVICE;
+
+    const highlight = (id: NodeId) => {
+      shown = id;
+      const set = activeSet(id);
+      nodes.forEach((n, nid) => {
+        n.classList.toggle('hi', set.has(nid));
+        n.classList.toggle('dim', !set.has(nid));
+      });
+      paths.forEach((p, i) => {
+        const on = isEdgeActive(EDGES[i], set);
+        p.classList.toggle('hi', on);
+        p.classList.toggle('dim', !on);
+      });
+      cards.forEach((c) => c.classList.toggle('on', c.dataset.id === id));
+    };
+
+    const switcher = createSwitcher(
+      DEFAULT_SERVICE,
+      {
+        fadeOut: () => panel.classList.add('out'),
+        show: (id) => {
+          variants.forEach((v) => { v.hidden = v.dataset.panel !== id; });
+          void panel.offsetWidth; // la variante nueva arranca desde .out y hace fade-in
+          panel.classList.remove('out');
+        },
+      },
+      reduce ? 0 : 220,
+    );
+
+    const preview = (id: NodeId) => {
+      highlight(id);
+      switcher.set(id);
+    };
+    const lock = (id: NodeId) => {
+      locked = id;
+      nodes.forEach((n, nid) => n.setAttribute('aria-pressed', String(nid === id)));
+      cards.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.id === id)));
+      preview(id);
+    };
+
+    /** Posición de layout relativa al grafo (ignora transforms de entrada y de .hi). */
+    const box = (el: HTMLElement) => {
+      let x = 0;
+      let y = 0;
+      for (let cur: HTMLElement | null = el; cur && cur !== graph; cur = cur.offsetParent as HTMLElement | null) {
+        x += cur.offsetLeft;
+        y += cur.offsetTop;
+      }
+      return { left: x, right: x + el.offsetWidth, mid: y + el.offsetHeight / 2 };
+    };
+
+    const draw = () => {
+      if (mobile.matches) {
+        svg.replaceChildren();
+        paths = [];
+        return;
+      }
+      const animate = !drawnOnce && !reduce;
+      paths = EDGES.map(([a, b], i) => {
+        const A = box(nodes.get(a)!);
+        const B = box(nodes.get(b)!);
+        const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p.setAttribute('d', curve(A.right, A.mid, B.left, B.mid));
+        if (animate) {
+          p.classList.add('draw');
+          p.style.animationDelay = `${300 + i * 30}ms`;
+        }
+        return p;
+      });
+      svg.replaceChildren(...paths);
+      if (animate) {
+        const drawn = paths;
+        setTimeout(() => drawn.forEach((p) => p.classList.remove('draw')), 1400 + 300 + EDGES.length * 30);
+      }
+      drawnOnce = true;
+      highlight(shown);
+    };
+
+    highlight(DEFAULT_SERVICE);
+
+    new IntersectionObserver((entries, io) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      visible = true;
+      graph.classList.add('in');
+      setTimeout(draw, reduce ? 0 : 200);
+      setTimeout(() => graph.classList.add('settled'), reduce ? 0 : 100 + nodes.size * 50 + 600);
+    }, { threshold: 0.2 }).observe(graph);
+    new ResizeObserver(() => { if (visible) draw(); }).observe(graph);
+    document.fonts?.ready.then(() => { if (visible) draw(); });
+
+    nodes.forEach((n, id) => {
+      n.addEventListener('mouseenter', () => preview(id));
+      n.addEventListener('mouseleave', () => preview(locked));
+      n.addEventListener('click', () => lock(id));
+    });
+    cards.forEach((c) =>
+      c.addEventListener('click', () => {
+        lock(c.dataset.id as NodeId);
+        const r = graph.getBoundingClientRect();
+        if (r.top > innerHeight || r.bottom < 0) {
+          graph.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+        }
+      }),
+    );
+  }
+</script>
+
+<style>
+  .map { padding: 72px 48px; border-top: 1px solid var(--line); }
+
+  .svcs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 36px; }
+  .svc {
+    position: relative; overflow: hidden; display: block;
+    padding: 18px 18px 16px; border: 1px solid var(--line3); background: var(--surface);
+    transition: border-color .25s, background .25s, transform .25s;
+  }
+  .svc::after {
+    content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+    background: var(--amber); transition: width .35s var(--ease);
+  }
+  .svc:hover { border-color: var(--muted2); transform: translateY(-2px); }
+  .svc.on { border-color: var(--amber); background: var(--surfacehi); }
+  .svc.on::after { width: 100%; }
+  .svc .t { display: block; padding-right: 18px; font-size: 17px; color: var(--strong); font-weight: 500; }
+  .svc .d { display: block; margin-top: 6px; font-size: 13px; color: var(--muted2); line-height: 1.45; font-weight: 300; }
+  .svc .c { display: block; margin-top: 12px; font-size: 11px; color: var(--amber-ink); }
+  .svc .num { position: absolute; right: 14px; top: 14px; font-size: 11px; color: var(--faint); transition: color .25s; }
+  .svc.on .num { color: var(--amber-ink); }
+
+  .gwrap { display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: stretch; }
+  .graph {
+    position: relative; display: grid; grid-template-columns: 170px 1fr 200px; gap: 0 44px;
+    padding: 22px 22px 26px; border: 1px solid var(--line); background: var(--graphbg);
+  }
+  .graph svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+  .graph :global(path) { fill: none; stroke: var(--line3); stroke-width: 1; transition: stroke .3s, opacity .3s; }
+  .graph :global(path.hi) { stroke: var(--amber); stroke-width: 1.4; stroke-dasharray: 6 6; animation: flow 1.2s linear infinite; }
+  .graph :global(path.dim) { opacity: .15; }
+  .graph :global(path.draw) { stroke-dasharray: 600; stroke-dashoffset: 600; animation: drawin 1.4s var(--ease) forwards; }
+
+  .col { position: relative; z-index: 2; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+  .colh { margin-bottom: 6px; font-size: 10px; letter-spacing: .14em; color: var(--muted3); text-transform: uppercase; }
+  .nd {
+    position: relative; display: block; width: 100%;
+    padding: 8px 11px; border: 1px solid var(--line3); background: var(--surface);
+    font-size: 12px; line-height: 1.3; color: var(--text);
+    transition: border-color .3s, background .3s, opacity .3s, transform .3s, color .3s;
+  }
+  .nd small { display: block; margin-top: 2px; font-size: 10px; color: var(--muted4); }
+  .nd:hover { border-color: var(--muted2); }
+  .nd.hi { border-color: var(--amber); color: var(--strong); background: var(--surfacehi); }
+  .nd.dim { opacity: .3; }
+  .nd.svcn { font-family: var(--font-sans); font-size: 13px; padding: 11px 13px; }
+  .nd.tech { width: auto; align-self: flex-start; font-size: 11px; padding: 5px 9px; color: var(--tech); background: transparent; }
+  .nd.tech.hi { background: var(--surfacehi); }
+
+  /* entrada escalonada; .settled la quita para que .hi pueda desplazar */
+  :global(.js) .graph .nd { opacity: 0; transform: translateY(10px); }
+  :global(.js) .graph:global(.in) .nd {
+    animation: ndin .6s var(--ease) forwards;
+    animation-delay: calc(100ms + var(--i) * 50ms);
+  }
+  :global(.js) .graph:global(.settled) .nd { animation: none; opacity: 1; transform: none; }
+  :global(.js) .graph:global(.settled) .nd.hi { transform: translateX(3px); }
+  :global(.js) .graph:global(.settled) .nd.dim { opacity: .3; }
+
+  .panel {
+    position: relative; overflow: hidden; display: flex; flex-direction: column;
+    padding: 22px; border: 1px solid var(--line3); background: var(--surface);
+  }
+  .inner { display: flex; flex-direction: column; flex: 1; transition: opacity .25s, transform .25s; }
+  .panel:global(.out) .inner { opacity: 0; transform: translateY(6px); }
+  .inner .k { margin-bottom: 10px; font-size: 11px; letter-spacing: .08em; color: var(--amber-ink); }
+  .inner h3 { font-size: 21px; color: var(--strong); font-weight: 500; letter-spacing: -.01em; line-height: 1.2; }
+  .inner .p { margin-top: 12px; font-size: 14px; line-height: 1.6; color: var(--text2); font-weight: 300; }
+  .inner ul { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .inner li { position: relative; padding-left: 14px; font-size: 13px; line-height: 1.45; color: var(--text); }
+  .inner li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 1px; background: var(--amber); }
+  .inner li a { text-decoration: none; border-bottom: 1px solid var(--line2); transition: border-color .2s; }
+  .inner li a:hover { border-color: var(--amber); }
+  .inner li span { display: block; margin-top: 2px; font-size: 11px; color: var(--muted); }
+  .cta { margin-top: auto; padding-top: 20px; font-size: 13px; }
+  .cta a {
+    display: inline-flex; gap: 6px; color: var(--strong); text-decoration: none;
+    border-bottom: 1px solid var(--line2); transition: border-color .2s;
+  }
+  .cta a:hover { border-color: var(--amber); }
+  .cta em { font-style: normal; transition: transform .25s; }
+  .cta a:hover em { transform: translateX(4px); }
+
+  .hint { margin-top: 14px; font-size: 11px; color: var(--faint); }
+
+  @media (max-width: 600px) {
+    .map { padding: 56px 20px; }
+    .svcs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .svc { padding: 13px 44px 12px 14px; }
+    .svc:hover { transform: none; }
+    .svc .t { font-size: 15px; line-height: 1.25; }
+    .svc .d { display: none; }
+    .svc.on .d { display: block; }
+    .svc .c { margin-top: 5px; font-size: 10px; }
+    .svc .num { top: 50%; transform: translateY(-50%); font-size: 12px; }
+    .gwrap { grid-template-columns: 1fr; gap: 16px; }
+    .graph { grid-template-columns: 1fr; gap: 18px; padding: 16px; }
+    .graph svg { display: none; }
+    .col { justify-content: flex-start; }
+    .svcol { display: none; }
+    .techcol { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+    .techcol .colh { width: 100%; }
+    :global(.js) .graph:global(.settled) .nd.hi { transform: none; }
+    .nd.dim, :global(.js) .graph:global(.settled) .nd.dim { opacity: .35; }
+    .hint { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .graph .nd { opacity: 1; transform: none; }
+  }
+</style>
