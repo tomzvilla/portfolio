@@ -15,12 +15,12 @@ const d = t(lang);
 <style>
   .ft {
     display: flex; justify-content: space-between; gap: 12px;
-    padding: 24px 48px; border-top: 1px solid var(--line); font-size: 11px;
+    padding: 24px var(--px); border-top: 1px solid var(--line); font-size: 11px;
   }
   .sign { color: var(--faint); }
   a { color: var(--muted); text-decoration: none; transition: color .2s; }
   a:hover { color: var(--amber-ink); }
   @media (max-width: 600px) {
-    .ft { flex-direction: column; gap: 6px; padding: 20px; }
+    .ft { flex-direction: column; gap: 6px; padding-block: 20px; }
   }
 </style>

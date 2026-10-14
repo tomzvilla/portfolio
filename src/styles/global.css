@@ -13,6 +13,14 @@
   src: url('/fonts/ibm-plex-mono-latin-400-normal.woff2') format('woff2');
 }
 
+/* contenedor: el contenido se centra en --wrap; bordes y fondos siguen a todo el ancho.
+   --px se usa como padding-inline de cada sección (el 100% es el ancho de la sección). */
+:root {
+  --wrap: 1200px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --px: max(var(--gutter), calc((100% - var(--wrap)) / 2));
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 [hidden] { display: none !important; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }

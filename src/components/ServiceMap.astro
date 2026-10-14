@@ -240,7 +240,7 @@ const entryFor = (slug: string) => {
 </script>
 
 <style>
-  .map { padding: 72px 48px; border-top: 1px solid var(--line); }
+  .map { padding: 72px var(--px); border-top: 1px solid var(--line); }
 
   .svcs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 36px; }
   .svc {
@@ -350,7 +350,7 @@ const entryFor = (slug: string) => {
     .hint { display: none; }
   }
   @media (max-width: 600px) {
-    .map { padding: 56px 20px; }
+    .map { padding-block: 56px; }
     .svc .t { font-size: 15px; line-height: 1.25; }
     .svc .c { margin-top: 5px; font-size: 10px; }
     .graph { padding: 16px; }

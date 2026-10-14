@@ -28,7 +28,7 @@ const entries = await getWork(lang);
 </section>
 
 <style>
-  .work { padding: 80px 48px 60px; border-top: 1px solid var(--line); }
+  .work { padding: 80px var(--px) 60px; border-top: 1px solid var(--line); }
   .row {
     position: relative; isolation: isolate;
     display: grid; grid-template-columns: 80px 1.1fr 1.8fr 190px 70px; gap: 22px; align-items: baseline;
@@ -58,6 +58,6 @@ const entries = await getWork(lang);
     .go { text-align: left; }
   }
   @media (max-width: 600px) {
-    .work { padding: 56px 20px 40px; }
+    .work { padding-block: 56px 40px; }
   }
 </style>

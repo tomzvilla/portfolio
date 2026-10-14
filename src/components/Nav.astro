@@ -37,7 +37,7 @@ const other = otherLang(lang);
   .top { position: sticky; top: 0; z-index: 10; }
   nav {
     display: flex; justify-content: space-between; align-items: center; gap: 16px;
-    padding: 18px 48px; font-size: 13px; color: var(--muted);
+    padding: 18px var(--px); font-size: 13px; color: var(--muted);
     background: var(--navbg); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
   }
@@ -62,6 +62,6 @@ const other = otherLang(lang);
     .anchors { display: none; }
   }
   @media (max-width: 600px) {
-    nav { padding: 14px 20px; }
+    nav { padding-block: 14px; }
   }
 </style>

@@ -15,7 +15,7 @@ const c = d.contact;
 </section>
 
 <style>
-  .contact { padding: 90px 48px 60px; border-top: 1px solid var(--line); text-align: center; }
+  .contact { padding: 90px var(--px) 60px; border-top: 1px solid var(--line); text-align: center; }
   h2 { font-size: 34px; color: var(--strong); font-weight: 400; letter-spacing: -.02em; }
   .big {
     position: relative; display: inline-block; margin-top: 24px; padding-bottom: 6px;
@@ -30,7 +30,7 @@ const c = d.contact;
   p a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line2); transition: border-color .2s; }
   p a:hover { border-color: var(--amber); }
   @media (max-width: 600px) {
-    .contact { padding: 64px 20px 40px; }
+    .contact { padding-block: 64px 40px; }
     h2 { font-size: 26px; }
     .big { font-size: 18px; color: var(--amber-ink); }
   }
