@@ -28,7 +28,7 @@ describe('páginas de proyecto', () => {
     const es = page('/trabajo/hunters-gallery/');
     expect(es.querySelectorAll('h1').map(text)).toEqual(["Hunter's Gallery"]);
     expect(es.querySelectorAll('.body h2').map(text)).toEqual(['Contexto', 'Qué construí', 'Con qué', 'Resultado']);
-    expect(page('/en/work/manent/').querySelectorAll('.body h2').map(text)).toEqual(['Context', 'What I built', 'Built with', 'Outcome']);
+    expect(page('/en/work/analisis-reuniones/').querySelectorAll('.body h2').map(text)).toEqual(['Context', 'What I built', 'Built with', 'Outcome']);
     expect(text(es.querySelector('title'))).toBe("Hunter's Gallery · Tomás Villarreal");
   });
 
@@ -74,8 +74,8 @@ describe('páginas de proyecto', () => {
     expect(last.querySelector('a[rel="next"]')).toBeNull();
   });
 
-  it('Manent no muestra chips de stack', () => {
-    expect(page('/trabajo/manent/').querySelector('.chips')).toBeNull();
+  it('análisis de reuniones no muestra chips de stack', () => {
+    expect(page('/trabajo/analisis-reuniones/').querySelector('.chips')).toBeNull();
     expect(page('/trabajo/sistemas-unc/').querySelectorAll('.chips li').map(text)).toEqual(['Vue', 'Node', 'MongoDB']);
   });
 });

@@ -6,7 +6,7 @@ export const WORK_SLUGS = [
   'tramites-vehiculares',
   'validacion-infracciones',
   'hunters-gallery',
-  'manent',
+  'analisis-reuniones',
   'sistemas-unc',
   'cienciaconecta',
 ] as const;
@@ -33,7 +33,7 @@ export const projects: ProjectNode[] = [
   { id: 'p3', slug: 'tramites-vehiculares', to: ['t1', 't4', 't5'] },
   { id: 'p4', slug: 'validacion-infracciones', to: ['t5', 't6'] },
   { id: 'p5', slug: 'hunters-gallery', to: ['t1', 't4', 't6', 't7'] },
-  { id: 'p6', slug: 'manent', to: ['t5', 't6'] },
+  { id: 'p6', slug: 'analisis-reuniones', to: ['t5', 't6'] },
   { id: 'p7', slug: 'sistemas-unc', to: ['t6', 't7'] },
   { id: 'p8', slug: 'cienciaconecta', to: ['t6', 't7'] },
 ];

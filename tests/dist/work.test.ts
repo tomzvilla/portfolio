@@ -24,7 +24,7 @@ describe('sección Trabajo', () => {
   it('la lista compacta tiene título y muestra cliente y período', () => {
     expect(text(page('/').querySelector('.work .more h3'))).toBe('Más trabajos');
     expect(text(page('/en/').querySelector('.work .more h3'))).toBe('More work');
-    const manent = page('/').querySelector('a.mr[href="/trabajo/manent/"]')!;
-    expect(text(manent.querySelector('small'))).toBe('LitusAI · 2024–25');
+    const meetings = page('/').querySelector('a.mr[href="/trabajo/analisis-reuniones/"]')!;
+    expect(text(meetings.querySelector('small'))).toBe('Startup de IA · Italia · 2024–25');
   });
 });

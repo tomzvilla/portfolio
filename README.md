@@ -16,7 +16,7 @@ Spec: `docs/superpowers/specs/2026-10-13-portfolio-redesign-design.md`.
 | `npm run og` | Regenera las imágenes Open Graph |
 | `npm run verify` | Todo lo anterior antes de deployar |
 
-`check:names` solo lee texto: no mira dentro de PDFs ni imágenes. Cuando cambien los CV de `public/cv/` o las capturas, revisarlos a mano. La lista de nombres prohibidos está codificada a propósito en `scripts/check-names.mjs` (el repo es público). Si cambia el copy del hero, volver a correr `npm run og`.
+`check:names` solo lee texto: no mira dentro de PDFs ni imágenes. Cuando cambien los CV de `public/cv/` o las capturas, revisarlos a mano. La lista de nombres prohibidos vive fuera de git, en `.superpowers/forbidden-names.json` (el repo es público); sin ese archivo `check:names` avisa y no revisa. Si cambia el copy del hero, volver a correr `npm run og`.
 
 ## Dónde está cada cosa
 

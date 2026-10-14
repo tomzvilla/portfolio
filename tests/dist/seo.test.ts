@@ -31,6 +31,6 @@ describe('SEO', () => {
       expect(png(`/og/og-${lang}.png`)).toEqual({ w: 1200, h: 630 });
     }
     expect(page('/').querySelector('meta[property="og:image"]')?.getAttribute('content')).toBe(`${SITE}/og/og-es.png`);
-    expect(page('/en/work/manent/').querySelector('meta[property="og:image"]')?.getAttribute('content')).toBe(`${SITE}/og/og-en.png`);
+    expect(page('/en/work/analisis-reuniones/').querySelector('meta[property="og:image"]')?.getAttribute('content')).toBe(`${SITE}/og/og-en.png`);
   });
 });

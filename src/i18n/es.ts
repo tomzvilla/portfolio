@@ -120,7 +120,7 @@ export const es: Dict = {
       p3: { name: 'Trámites vehiculares', sub: 'Colombia · 2026' },
       p4: { name: 'Validación de infracciones', sub: 'Colombia · 2025–26' },
       p5: { name: "Hunter's Gallery", sub: 'tienda de deportes · 2024 → hoy' },
-      p6: { name: 'Manent', sub: 'LitusAI · 2024–25' },
+      p6: { name: 'Análisis de reuniones con IA', sub: 'startup italiana · 2024–25' },
       p7: { name: 'Acceso único y autogestión', sub: 'PSI · UNC · 2023 → hoy' },
       p8: { name: 'CienciaConecta', sub: 'Gobierno de Córdoba · 2023' },
     },

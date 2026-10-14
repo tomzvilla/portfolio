@@ -6,16 +6,16 @@ describe('rutas', () => {
   it('arma home y proyecto por idioma, con barra final', () => {
     expect(homePath('es')).toBe('/');
     expect(homePath('en')).toBe('/en/');
-    expect(workPath('es', 'manent')).toBe('/trabajo/manent/');
-    expect(workPath('en', 'manent')).toBe('/en/work/manent/');
+    expect(workPath('es', 'analisis-reuniones')).toBe('/trabajo/analisis-reuniones/');
+    expect(workPath('en', 'analisis-reuniones')).toBe('/en/work/analisis-reuniones/');
   });
 
   it('detecta el idioma por la ruta', () => {
     expect(langFromPath('/')).toBe('es');
-    expect(langFromPath('/trabajo/manent/')).toBe('es');
+    expect(langFromPath('/trabajo/analisis-reuniones/')).toBe('es');
     expect(langFromPath('/en/')).toBe('en');
     expect(langFromPath('/en')).toBe('en');
-    expect(langFromPath('/en/work/manent/')).toBe('en');
+    expect(langFromPath('/en/work/analisis-reuniones/')).toBe('en');
     expect(langFromPath('/english/')).toBe('es');
   });
 
@@ -25,8 +25,8 @@ describe('rutas', () => {
     expect(altLangPath('/en')).toBe('/');
     expect(altLangPath('/trabajo/hunters-gallery/')).toBe('/en/work/hunters-gallery/');
     expect(altLangPath('/trabajo/hunters-gallery')).toBe('/en/work/hunters-gallery/');
-    expect(altLangPath('/en/work/manent/')).toBe('/trabajo/manent/');
-    expect(altLangPath('/trabajo/manent/?utm=x#contexto')).toBe('/en/work/manent/');
+    expect(altLangPath('/en/work/analisis-reuniones/')).toBe('/trabajo/analisis-reuniones/');
+    expect(altLangPath('/trabajo/analisis-reuniones/?utm=x#contexto')).toBe('/en/work/analisis-reuniones/');
   });
 
   it('una ruta desconocida cae en la home del otro idioma', () => {
