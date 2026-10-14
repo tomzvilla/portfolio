@@ -31,6 +31,7 @@ const entryFor = (slug: string) => {
       >
         <span class="num mono" aria-hidden="true">{sv.letter}</span>
         <span class="t">{s.items[sv.id].title}</span>
+        <span class="s">{s.items[sv.id].node}</span>
         <span class="d">{s.items[sv.id].desc}</span>
         <span class="c mono">{s.count(supportCount(sv.id))}</span>
       </button>
@@ -51,7 +52,7 @@ const entryFor = (slug: string) => {
       <div class="col prjcol">
         <p class="colh mono">{s.colProjects}</p>
         {projects.map((p, i) => (
-          <button type="button" class="nd mono" data-id={p.id} aria-pressed="false" style={`--i:${4 + i}`}>
+          <button type="button" class="nd mono" data-id={p.id} data-href={workPath(lang, p.slug)} aria-pressed="false" style={`--i:${4 + i}`}>
             {s.projects[p.id].name} <small>{s.projects[p.id].sub}</small>
           </button>
         ))}
@@ -70,9 +71,10 @@ const entryFor = (slug: string) => {
       {services.map((sv) => {
         const pn = s.items[sv.id].panel;
         return (
-          <div class="inner" data-panel={sv.id} hidden={sv.id !== DEFAULT_SERVICE}>
+          <div class="inner" data-panel={sv.id} data-kind="service" hidden={sv.id !== DEFAULT_SERVICE}>
             <p class="k mono">{pn.k}</p>
             <h3>{pn.h}</h3>
+            <p class="sd">{s.items[sv.id].desc}</p>
             <p class="p">{pn.p}</p>
             <ul>
               {pn.items.map((it) => (
@@ -102,11 +104,17 @@ const entryFor = (slug: string) => {
         </div>
       ))}
     </div>
+
+    <!-- solo en la vista en lista: el llamado cambia a «ver el proyecto» al elegir uno -->
+    <div class="mcta" data-case={mailtoHref(lang)} data-ask={s.caseAsk} data-case-label={s.caseCta} data-project-label={s.projectCta}>
+      <span class="q">{s.caseAsk}</span>
+      <a href={mailtoHref(lang)}><span>{s.caseCta}</span> <em aria-hidden="true">→</em></a>
+    </div>
   </div>
 </section>
 
 <script>
-  import { activeSet, DEFAULT_SERVICE, edges, isEdgeActive, type NodeId } from '../data/graph';
+  import { activeSet, DEFAULT_SERVICE, edges, isEdgeActive, projects, services, targets, type NodeId, type ProjectId, type ServiceId } from '../data/graph';
   import { curve } from '../scripts/curve';
   import { createSwitcher } from '../scripts/switcher';
 
@@ -114,27 +122,44 @@ const entryFor = (slug: string) => {
   const graph = root?.querySelector<HTMLElement>('.graph');
   const svg = graph?.querySelector('svg');
   const panel = root?.querySelector<HTMLElement>('.panel');
+  const cta = root?.querySelector<HTMLElement>('.mcta');
 
-  if (root && graph && svg && panel) {
+  if (root && graph && svg && panel && cta) {
     const nodes = new Map(
       [...graph.querySelectorAll<HTMLButtonElement>('.nd')].map((n) => [n.dataset.id as NodeId, n]),
     );
     const cards = [...root.querySelectorAll<HTMLButtonElement>('.svc')];
     const variants = [...panel.querySelectorAll<HTMLElement>('[data-panel]')];
+    const ctaQ = cta.querySelector<HTMLElement>('.q')!;
+    const ctaA = cta.querySelector<HTMLAnchorElement>('a')!;
+    const ctaLabel = ctaA.querySelector<HTMLElement>('span')!;
     // debe coincidir con el @media de layout en lista del CSS (abajo)
     const mobile = matchMedia('(max-width: 1060px)');
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const EDGES = edges();
-    let paths: SVGPathElement[] = [];
+    const SERVICE_IDS: NodeId[] = services.map((sv) => sv.id);
+    const isService = (id: NodeId): id is ServiceId => SERVICE_IDS.includes(id);
+    const isProject = (id: NodeId): id is ProjectId => projects.some((p) => p.id === id);
+    let paths: SVGElement[] = [];
     let visible = false;
     let drawnOnce = false;
     let locked: NodeId = DEFAULT_SERVICE;
     let shown: NodeId = DEFAULT_SERVICE;
+    // vista en lista: el servicio elegido y, opcionalmente, uno de sus proyectos
+    let service: ServiceId = DEFAULT_SERVICE;
+    let picked: ProjectId | null = null;
+
+    const markCards = (id: NodeId) => {
+      cards.forEach((c) => c.classList.toggle('on', c.dataset.id === id));
+      const i = SERVICE_IDS.indexOf(id);
+      if (i >= 0) root.style.setProperty('--on', String(i));
+    };
 
     const highlight = (id: NodeId) => {
       shown = id;
       const set = activeSet(id);
       nodes.forEach((n, nid) => {
+        n.classList.remove('sel');
         n.classList.toggle('hi', set.has(nid));
         n.classList.toggle('dim', !set.has(nid));
       });
@@ -143,7 +168,91 @@ const entryFor = (slug: string) => {
         p.classList.toggle('hi', on);
         p.classList.toggle('dim', !on);
       });
-      cards.forEach((c) => c.classList.toggle('on', c.dataset.id === id));
+      markCards(id);
+    };
+
+    /** Posición de layout relativa al grafo (ignora transforms de entrada y de .hi). */
+    const box = (el: HTMLElement) => {
+      let x = 0;
+      let y = 0;
+      for (let cur: HTMLElement | null = el; cur && cur !== graph; cur = cur.offsetParent as HTMLElement | null) {
+        x += cur.offsetLeft;
+        y += cur.offsetTop;
+      }
+      return { left: x, right: x + el.offsetWidth, mid: y + el.offsetHeight / 2 };
+    };
+
+    const SVGNS = 'http://www.w3.org/2000/svg';
+    /** Vista en lista: un riel a la izquierda baja desde el primer proyecto encendido hacia cada uno. */
+    const drawList = () => {
+      const lit = targets(service);
+      const focus = picked ? [picked] : lit;
+      const x = 17;
+      const y0 = Math.min(...lit.map((id) => box(nodes.get(id)!).mid));
+      paths = projects.map(({ id }) => {
+        const B = box(nodes.get(id)!);
+        const p = document.createElementNS(SVGNS, 'path');
+        p.setAttribute('d', `M${x} ${y0} C${x} ${(y0 + B.mid) / 2} ${x} ${B.mid} ${B.left} ${B.mid}`);
+        p.classList.add(focus.includes(id) ? 'hi' : 'dim');
+        return p;
+      });
+      const dot = document.createElementNS(SVGNS, 'circle');
+      dot.setAttribute('class', 'src');
+      dot.setAttribute('cx', String(x));
+      dot.setAttribute('cy', String(y0));
+      dot.setAttribute('r', '4.5');
+      svg.replaceChildren(...paths, dot);
+    };
+
+    const draw = () => {
+      if (mobile.matches) {
+        drawList();
+        return;
+      }
+      const animate = !drawnOnce && !reduce;
+      paths = EDGES.map(([a, b], i) => {
+        const A = box(nodes.get(a)!);
+        const B = box(nodes.get(b)!);
+        const p = document.createElementNS(SVGNS, 'path');
+        p.setAttribute('d', curve(A.right, A.mid, B.left, B.mid));
+        if (animate) {
+          p.classList.add('draw');
+          p.style.animationDelay = `${300 + i * 30}ms`;
+        }
+        return p;
+      });
+      svg.replaceChildren(...paths);
+      if (animate) {
+        const drawn = paths;
+        setTimeout(() => drawn.forEach((p) => p.classList.remove('draw')), 1400 + 300 + EDGES.length * 30);
+      }
+      drawnOnce = true;
+      highlight(shown);
+    };
+
+    /** Vista en lista: proyectos del servicio encendidos; si hay uno elegido, solo él y su stack. */
+    const paintList = () => {
+      const lit = targets(service);
+      const focus = picked ? [picked] : lit;
+      const techs = new Set(focus.flatMap((p) => targets(p)));
+      nodes.forEach((n, nid) => {
+        if (isProject(nid)) {
+          n.classList.toggle('hi', lit.includes(nid));
+          n.classList.toggle('dim', !focus.includes(nid));
+          n.classList.toggle('sel', picked === nid);
+          n.setAttribute('aria-pressed', String(picked === nid));
+        } else if (!isService(nid)) {
+          n.classList.toggle('hi', techs.has(nid));
+          n.classList.toggle('dim', !techs.has(nid));
+        }
+      });
+      markCards(service);
+      const p = picked ? nodes.get(picked)! : null;
+      ctaQ.textContent = p ? p.firstChild!.textContent!.trim() : cta.dataset.ask!;
+      ctaLabel.textContent = p ? cta.dataset.projectLabel! : cta.dataset.caseLabel!;
+      ctaA.href = p ? p.dataset.href! : cta.dataset.case!;
+      cta.classList.toggle('picked', !!p);
+      if (visible) draw();
     };
 
     const switcher = createSwitcher(
@@ -164,51 +273,41 @@ const entryFor = (slug: string) => {
       switcher.set(id);
     };
     const lock = (id: NodeId) => {
+      if (mobile.matches) {
+        if (isService(id)) {
+          service = id;
+          picked = null;
+          locked = id;
+          cards.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.id === id)));
+          switcher.set(id);
+        } else if (isProject(id) && targets(service).includes(id)) {
+          picked = picked === id ? null : id;
+        } else {
+          return;
+        }
+        paintList();
+        return;
+      }
       locked = id;
+      if (isService(id)) service = id;
       nodes.forEach((n, nid) => n.setAttribute('aria-pressed', String(nid === id)));
       cards.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.id === id)));
       preview(id);
     };
 
-    /** Posición de layout relativa al grafo (ignora transforms de entrada y de .hi). */
-    const box = (el: HTMLElement) => {
-      let x = 0;
-      let y = 0;
-      for (let cur: HTMLElement | null = el; cur && cur !== graph; cur = cur.offsetParent as HTMLElement | null) {
-        x += cur.offsetLeft;
-        y += cur.offsetTop;
-      }
-      return { left: x, right: x + el.offsetWidth, mid: y + el.offsetHeight / 2 };
+    // en la lista las tecnologías solo se iluminan: no son botones
+    const syncTechFocus = () => {
+      nodes.forEach((n, nid) => { if (!isService(nid) && !isProject(nid)) n.tabIndex = mobile.matches ? -1 : 0; });
     };
+    syncTechFocus();
+    if (mobile.matches) paintList(); else highlight(DEFAULT_SERVICE);
 
-    const draw = () => {
-      if (mobile.matches) {
-        svg.replaceChildren();
-        paths = [];
-        return;
-      }
-      const animate = !drawnOnce && !reduce;
-      paths = EDGES.map(([a, b], i) => {
-        const A = box(nodes.get(a)!);
-        const B = box(nodes.get(b)!);
-        const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        p.setAttribute('d', curve(A.right, A.mid, B.left, B.mid));
-        if (animate) {
-          p.classList.add('draw');
-          p.style.animationDelay = `${300 + i * 30}ms`;
-        }
-        return p;
-      });
-      svg.replaceChildren(...paths);
-      if (animate) {
-        const drawn = paths;
-        setTimeout(() => drawn.forEach((p) => p.classList.remove('draw')), 1400 + 300 + EDGES.length * 30);
-      }
-      drawnOnce = true;
-      highlight(shown);
-    };
-
-    highlight(DEFAULT_SERVICE);
+    mobile.addEventListener('change', () => {
+      syncTechFocus();
+      picked = null;
+      lock(service);
+      if (visible) draw();
+    });
 
     new IntersectionObserver((entries, io) => {
       if (!entries.some((e) => e.isIntersecting)) return;
@@ -222,19 +321,34 @@ const entryFor = (slug: string) => {
     document.fonts?.ready.then(() => { if (visible) draw(); });
 
     nodes.forEach((n, id) => {
-      n.addEventListener('mouseenter', () => preview(id));
-      n.addEventListener('mouseleave', () => preview(locked));
+      n.addEventListener('mouseenter', () => { if (!mobile.matches) preview(id); });
+      n.addEventListener('mouseleave', () => { if (!mobile.matches) preview(locked); });
       n.addEventListener('click', () => lock(id));
     });
     cards.forEach((c) =>
       c.addEventListener('click', () => {
         lock(c.dataset.id as NodeId);
+        if (mobile.matches) return;
         const r = graph.getBoundingClientRect();
         if (r.top > innerHeight || r.bottom < 0) {
           graph.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
         }
       }),
     );
+
+    // vista en lista: deslizar de costado sobre el gráfico pasa al servicio anterior o siguiente
+    let start: { x: number; y: number } | null = null;
+    graph.addEventListener('pointerdown', (e) => { start = { x: e.clientX, y: e.clientY }; });
+    graph.addEventListener('pointercancel', () => { start = null; });
+    graph.addEventListener('pointerup', (e) => {
+      if (!start || !mobile.matches) return;
+      const dx = e.clientX - start.x;
+      const dy = e.clientY - start.y;
+      start = null;
+      if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      const i = SERVICE_IDS.indexOf(service);
+      lock(SERVICE_IDS[(i + (dx < 0 ? 1 : -1) + SERVICE_IDS.length) % SERVICE_IDS.length]);
+    });
   }
 </script>
 
@@ -260,6 +374,7 @@ const entryFor = (slug: string) => {
   .svc .c { display: block; margin-top: auto; padding-top: 12px; font-size: 11px; color: var(--amber-ink); }
   .svc .num { position: absolute; right: 14px; top: 14px; font-size: 11px; color: var(--faint); transition: color .25s; }
   .svc.on .num { color: var(--amber-ink); }
+  .svc .s, .inner .sd, .mcta { display: none; }
 
   .gwrap { display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: stretch; }
   .graph {
@@ -330,29 +445,63 @@ const entryFor = (slug: string) => {
   .cta a:hover em { transform: translateX(4px); }
 
 
-  /* layout en lista: sin columna de servicios ni líneas (debe coincidir con matchMedia en el script) */
+  /* vista en lista (debe coincidir con matchMedia en el script): selector fijo A–D,
+     encabezado del servicio, proyectos con un riel animado y un llamado que cambia */
   @media (max-width: 1060px) {
-    .svcs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-    .svc { padding: 13px 44px 12px 14px; }
-    .svc:hover { transform: none; }
-    .svc .d { display: none; }
-    .svc.on .d { display: block; }
-    .svc .num { top: 50%; transform: translateY(-50%); font-size: 12px; }
-    .gwrap { grid-template-columns: 1fr; gap: 16px; }
-    .graph { grid-template-columns: 1fr; gap: 18px; }
-    .graph svg { display: none; }
+    .svcs {
+      position: sticky; top: 66px; z-index: 5;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+      margin: 0 calc(-1 * var(--gutter)) 18px; padding: 10px var(--gutter);
+      background: var(--navbg); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .svcs::before {
+      content: ''; position: absolute; z-index: 2; top: 10px; bottom: 10px; left: var(--gutter);
+      width: calc((100% - 2 * var(--gutter)) / 4); pointer-events: none;
+      border: 1px solid var(--amber);
+      background: linear-gradient(var(--amber), var(--amber)) bottom / 100% 2px no-repeat;
+      transform: translateX(calc(var(--on, 0) * 100%)); transition: transform .45s var(--ease);
+    }
+    .svc { align-items: center; padding: 9px 4px 8px; text-align: center; }
+    .svc + .svc { border-left: 0; }
+    .svc:hover { transform: none; border-color: var(--line3); }
+    .svc.on { border-color: var(--line3); background: var(--surface); }
+    .svc::after, .svc .t, .svc .d, .svc .c { display: none; }
+    .svc .num { position: static; display: block; margin-bottom: 3px; font-size: 10px; }
+    .svc .s { display: block; max-width: 100%; font-size: 11.5px; line-height: 1.25; color: var(--muted); overflow-wrap: break-word; transition: color .25s; }
+    .svc.on .s { color: var(--strong); }
+
+    .gwrap { display: flex; flex-direction: column; gap: 16px; }
+    .panel { order: -1; padding: 0; border: 0; background: none; }
+    .inner:not([data-kind='service']) { display: none !important; }
+    .inner .k, .inner .p, .inner ul, .inner .cta { display: none; }
+    .inner .sd { display: block; margin-top: 8px; font-size: 14px; line-height: 1.55; color: var(--text2); font-weight: 300; }
+
+    .graph { grid-template-columns: 1fr; gap: 18px; padding: 16px 16px 18px 40px; touch-action: pan-y; }
+    .graph :global(circle.src) { fill: var(--amber); stroke: var(--amber-a12); stroke-width: 8; transition: cy .45s var(--ease); }
     .col { justify-content: flex-start; }
     .svcol { display: none; }
     .techcol { flex-direction: row; flex-wrap: wrap; gap: 6px; }
     .techcol .colh { width: 100%; }
-    :global(.js) .graph:global(.settled) .nd.hi { transform: none; }
+    .nd.tech { pointer-events: none; }
+    .nd.sel { box-shadow: inset 3px 0 0 var(--amber); }
+    :global(.js) .graph:global(.settled) .nd.hi { transform: translateX(4px); }
     .nd.dim, :global(.js) .graph:global(.settled) .nd.dim { opacity: .35; }
+
+    .mcta {
+      display: flex; justify-content: space-between; align-items: center; gap: 14px;
+      padding: 14px 16px; border: 1px solid var(--line3); background: var(--surface);
+    }
+    .mcta .q { font-size: 13px; line-height: 1.4; color: var(--text2); }
+    .mcta.picked .q { font-family: var(--font-mono); font-size: 12px; color: var(--strong); }
+    .mcta a {
+      display: inline-flex; gap: 6px; flex: none; color: var(--strong); text-decoration: none;
+      font-size: 13px; border-bottom: 1px solid var(--amber); padding-bottom: 2px;
+    }
   }
   @media (max-width: 600px) {
     .map { padding-block: 56px; }
-    .svc .t { font-size: 15px; line-height: 1.25; }
-    .svc .c { padding-top: 5px; font-size: 10px; }
-    .graph { padding: 16px; }
+    .svcs { top: 58px; }
+    .graph { padding: 14px 14px 16px 38px; }
   }
   @media (prefers-reduced-motion: reduce) {
     :global(.js) .graph .nd { opacity: 1; transform: none; }

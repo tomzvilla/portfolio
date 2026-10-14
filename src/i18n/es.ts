@@ -46,6 +46,7 @@ export const es: Dict = {
     colProjects: 'Lo que ya hice · 2026 → 2023',
     colTechs: 'Con qué',
     caseCta: 'Contame tu caso',
+    caseAsk: '¿Es lo que necesitás?',
     projectKicker: 'PROYECTO',
     projectCta: 'Ver el proyecto',
     techKicker: 'TECNOLOGÍA',
@@ -69,7 +70,7 @@ export const es: Dict = {
       s2: {
         title: 'Menos trabajo manual, más tiempo',
         desc: 'Automatizo lo repetitivo para que tu equipo tenga tiempo y atienda más rápido a tus clientes.',
-        node: 'Automatización',
+        node: 'Automati­zación',
         panel: {
           k: 'B · AUTOMATIZACIÓN',
           h: 'Automatizo lo repetitivo para que tu equipo atienda antes y mejor.',

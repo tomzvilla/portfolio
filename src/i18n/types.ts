@@ -22,7 +22,7 @@ export interface Dict {
   services: {
     n: string; title: string; lead: string; count: (n: number) => string;
     colServices: string; colProjects: string; colTechs: string;
-    caseCta: string; projectKicker: string; projectCta: string; techKicker: string; techBody: string;
+    caseCta: string; caseAsk: string; projectKicker: string; projectCta: string; techKicker: string; techBody: string;
     items: Record<ServiceId, {
       title: string; desc: string; node: string;
       panel: { k: string; h: string; p: string; items: PanelItem[] };

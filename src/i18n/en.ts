@@ -46,6 +46,7 @@ export const en: Dict = {
     colProjects: "What I've built · 2026 → 2023",
     colTechs: 'With what',
     caseCta: 'Tell me about your case',
+    caseAsk: 'Is this what you need?',
     projectKicker: 'PROJECT',
     projectCta: 'See the project',
     techKicker: 'TECHNOLOGY',
