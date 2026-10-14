@@ -3,6 +3,7 @@ title: "Acceso único y autogestión"
 client: "PSI · UNC"
 period: "2023 → hoy"
 order: 7
+featured: true
 role: "Software engineer"
 stack: ["Vue", "Node", "MongoDB"]
 problem: "Sistemas que usan a diario más de 100.000 estudiantes."

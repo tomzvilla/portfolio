@@ -3,6 +3,7 @@ title: "Hunter's Gallery"
 client: "Tienda de deportes · Córdoba"
 period: "2024 → hoy"
 order: 5
+featured: true
 role: "Todo el stack · solo"
 stack: ["Next.js", "Node", "MongoDB"]
 problem: "Una tienda que vendía por un WhatsApp personal sin registrar nada."

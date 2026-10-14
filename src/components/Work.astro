@@ -8,56 +8,98 @@ const { lang } = Astro.props;
 const d = t(lang);
 const w = d.work;
 const entries = await getWork(lang);
+const featured = entries.filter((e) => e.data.featured);
+const rest = entries.filter((e) => !e.data.featured);
 ---
 <section class="work" id={d.ids.work} aria-labelledby="work-title">
   <div class="sh rv"><span class="n">{w.n}</span><h2 id="work-title">{w.title}</h2></div>
   <p class="lead rv" style="--d:100ms">{w.lead}</p>
   <ol class="rows">
-    {entries.map((e, i) => (
+    {featured.map((e, i) => (
       <li class="rv" style={`--d:${i * 60}ms`}>
         <a class="row" href={workPath(lang, slugOf(e))}>
-          <span class="y mono">{e.data.period}</span>
-          <span class="t">{e.data.title}<small>{e.data.client}</small></span>
-          <span class="d"><b>{e.data.problem}</b> {e.data.summary}</span>
-          <span class="r mono">{e.data.role}{e.data.stack.length > 0 && <Fragment><br />{e.data.stack.join(' · ')}</Fragment>}</span>
-          <span class="go mono" aria-hidden="true">{w.see}</span>
+          <span class="y mono">{e.data.period}<span class="yc"> · {e.data.client}</span></span>
+          <span class="t"><span>{e.data.title}<small>{e.data.client}</small></span><em aria-hidden="true">→</em></span>
+          <span class="d"><b>{e.data.problem}</b><span class="sm"> {e.data.summary}</span></span>
+          <span class="r mono"><span class="ro">{e.data.role}</span>{e.data.stack.length > 0 && <span class="st">{e.data.stack.join(' · ')}</span>}</span>
+          <span class="go" aria-hidden="true">→</span>
         </a>
       </li>
     ))}
   </ol>
+  {rest.length > 0 && (
+    <div class="more rv">
+      <h3 class="k mono">{w.more}</h3>
+      <ul>
+        {rest.map((e) => (
+          <li>
+            <a class="mr" href={workPath(lang, slugOf(e))}>
+              <span>{e.data.title}<small class="mono">{e.data.client} · {e.data.period}</small></span>
+              <em aria-hidden="true">→</em>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
 </section>
 
 <style>
   .work { padding: 80px var(--px) 60px; border-top: 1px solid var(--line); }
   .row {
     position: relative; isolation: isolate;
-    display: grid; grid-template-columns: 80px 1.1fr 1.8fr 190px 70px; gap: 22px; align-items: baseline;
+    display: grid; grid-template-columns: 80px 1.1fr 1.8fr 190px 24px; gap: 22px; align-items: baseline;
     padding: 22px 0; border-bottom: 1px solid var(--line);
     color: inherit; text-decoration: none;
     transition: transform .25s var(--ease);
   }
-  .row::before {
+  .row::before, .mr::before {
     content: ''; position: absolute; inset: 0 -16px; z-index: -1;
     background: var(--surface); opacity: 0; transition: opacity .25s;
   }
   .row:hover { transform: translateX(3px); }
-  .row:hover::before { opacity: 1; }
-  .row:hover .t { color: var(--amber-ink); }
-  .row:hover .go { color: var(--amber-ink); transform: translateX(4px); }
+  .row:hover::before, .mr:hover::before { opacity: 1; }
+  .row:hover .t, .mr:hover > span { color: var(--amber-ink); }
+  .row:hover .go, .row:hover .t em, .mr:hover em { color: var(--amber-ink); transform: translateX(4px); }
   .y { font-size: 12px; color: var(--muted); }
+  .yc { display: none; }
   .t { font-size: 18px; color: var(--strong); font-weight: 500; transition: color .2s; }
   .t small { display: block; margin-top: 3px; font-size: 12px; color: var(--muted); font-weight: 400; }
+  .t em { display: none; }
   .d { font-size: 14px; color: var(--text2); line-height: 1.55; font-weight: 300; }
   .d b { color: var(--text); font-weight: 400; }
   .r { font-size: 11px; color: var(--muted); line-height: 1.6; text-transform: uppercase; }
-  .go { font-size: 11px; color: var(--faint); text-align: right; transition: color .2s, transform .25s; }
+  .r > span { display: block; }
+  em, .go { font-style: normal; color: var(--faint); transition: color .2s, transform .25s var(--ease); }
+  .go { font-size: 14px; text-align: right; }
 
+  .more { margin-top: 36px; }
+  .more .k { margin-bottom: 6px; font-size: 11px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .more ul { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 48px; }
+  .mr {
+    position: relative; isolation: isolate;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    padding: 14px 0; border-bottom: 1px solid var(--line);
+    font-size: 15px; color: var(--text); text-decoration: none;
+  }
+  .mr > span { transition: color .2s; }
+  .mr small { display: block; margin-top: 3px; font-size: 11px; color: var(--muted); }
+
+  /* celular: año y cliente en una línea, el título con su flecha, solo el problema y el stack */
   @media (max-width: 900px) {
-    .row { grid-template-columns: 1fr; gap: 6px; padding: 18px 0; }
+    .row { grid-template-columns: 1fr; gap: 6px; padding: 18px 0 16px; }
     .row:hover { transform: none; }
-    .go { text-align: left; }
+    .y { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+    .yc { display: inline; }
+    .t { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 19px; }
+    .t small, .go, .sm, .r .ro { display: none; }
+    .t em { display: inline; font-size: 15px; }
+    .d { font-size: 14px; line-height: 1.5; }
+    .r { margin-top: 2px; font-size: 10px; letter-spacing: .06em; color: var(--tech); }
+    .more { margin-top: 28px; }
   }
   @media (max-width: 600px) {
     .work { padding-block: 56px 40px; }
+    .more ul { grid-template-columns: 1fr; }
   }
 </style>

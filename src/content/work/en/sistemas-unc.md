@@ -3,6 +3,7 @@ title: "Single sign-on and self-service"
 client: "PSI · UNC"
 period: "2023 → now"
 order: 7
+featured: true
 role: "Software engineer"
 stack: ["Vue", "Node", "MongoDB"]
 problem: "Systems used every day by more than 100,000 students."

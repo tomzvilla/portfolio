@@ -3,6 +3,7 @@ title: "Vehicle registration services"
 client: "Colombia"
 period: "2026"
 order: 3
+featured: true
 role: "Full stack · team of 3"
 stack: ["Next.js", "TypeScript"]
 problem: "Offices that charge and reconcile by hand, with no trace of who did what."

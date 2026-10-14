@@ -3,6 +3,7 @@ title: "AI agent evaluation"
 client: "AI startup · Europe"
 period: "2026 → now"
 order: 1
+featured: true
 role: "Full stack"
 stack: ["TypeScript", "React", "Node"]
 problem: "Companies putting AI agents in front of their customers without knowing how they can fail."

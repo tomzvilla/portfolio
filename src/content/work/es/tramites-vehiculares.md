@@ -3,6 +3,7 @@ title: "Trámites vehiculares"
 client: "Colombia"
 period: "2026"
 order: 3
+featured: true
 role: "Full stack · equipo de 3"
 stack: ["Next.js", "TypeScript"]
 problem: "Oficinas que cobran y concilian a mano, sin rastro de quién hizo qué."

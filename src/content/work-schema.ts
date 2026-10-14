@@ -8,6 +8,8 @@ export function workSchema<I extends z.ZodTypeAny>(image: () => I) {
       client: z.string(),
       period: z.string(),
       order: z.number().int().positive(),
+      // los destacados van completos en el inicio; el resto, en la lista compacta
+      featured: z.boolean().default(false),
       role: z.string(),
       stack: z.array(z.string()),
       problem: z.string(),

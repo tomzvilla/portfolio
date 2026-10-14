@@ -30,7 +30,7 @@ export interface Dict {
     projects: Record<ProjectId, { name: string; sub: string }>;
     techs: Record<TechId, string>;
   };
-  work: { n: string; title: string; lead: string; see: string };
+  work: { n: string; title: string; lead: string; more: string };
   /** Los párrafos pueden traer <b>; se renderizan con set:html (texto propio, no de usuarios). */
   about: { n: string; title: string; paragraphs: string[]; facts: { k: string; v: string }[] };
   contact: { title: string; replies: string; also: string; and: string };

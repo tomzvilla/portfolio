@@ -137,7 +137,7 @@ export const en: Dict = {
     n: '02',
     title: 'Work',
     lead: 'From the present backwards. The problem first, then what I built.',
-    see: 'SEE →',
+    more: 'More work',
   },
   about: {
     n: '03',

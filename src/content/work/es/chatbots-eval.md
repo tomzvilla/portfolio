@@ -3,6 +3,7 @@ title: "Evaluación de agentes de IA"
 client: "Startup de IA · Europa"
 period: "2026 → hoy"
 order: 1
+featured: true
 role: "Full stack"
 stack: ["TypeScript", "React", "Node"]
 problem: "Empresas que ponen agentes de IA frente a sus clientes sin saber cómo pueden fallar."
