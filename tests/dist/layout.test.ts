@@ -52,9 +52,11 @@ describe('nav', () => {
       expect(btn.getAttribute('aria-expanded')).toBe('false');
       const panel = doc.getElementById(btn.getAttribute('aria-controls')!)!;
       expect(panel.hasAttribute('hidden')).toBe(true);
-      expect(panel.querySelectorAll('a').map((a) => a.getAttribute('href'))).toEqual(
+      expect(panel.querySelectorAll('li a').map((a) => a.getAttribute('href'))).toEqual(
         doc.querySelectorAll('.anchors a').map((a) => a.getAttribute('href')),
       );
+      expect(panel.querySelector('a.lang')?.getAttribute('href')).toBe(route === '/' ? '/en/' : '/');
+      expect(panel.querySelector('button[data-theme-toggle]')).not.toBeNull();
     }
   });
 

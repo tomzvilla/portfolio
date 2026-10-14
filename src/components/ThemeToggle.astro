@@ -12,9 +12,11 @@ const { lang } = Astro.props;
 <script>
   import { applyTheme, currentTheme } from '../scripts/theme';
 
-  for (const btn of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
-    const sync = () => btn.setAttribute('aria-pressed', String(currentTheme() === 'light'));
-    sync();
+  // Puede haber más de un toggle (barra y menú mobile): todos reflejan el mismo estado.
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+  const sync = () => buttons.forEach((b) => b.setAttribute('aria-pressed', String(currentTheme() === 'light')));
+  sync();
+  for (const btn of buttons) {
     btn.addEventListener('click', () => {
       applyTheme(currentTheme() === 'light' ? 'dark' : 'light');
       sync();

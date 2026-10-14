@@ -28,15 +28,21 @@ const other = otherLang(lang);
     </div>
     <div class="rt">
       <span class="av"><i aria-hidden="true"></i>{d.nav.available}</span>
-      <ThemeToggle lang={lang} />
+      <span class="thw"><ThemeToggle lang={lang} /></span>
       <button class="mb" type="button" aria-label={d.nav.menu} aria-expanded="false" aria-controls="mnav" data-menu-toggle>
         <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
       </button>
     </div>
   </nav>
-  <ul class="mnav" id="mnav" hidden>
-    {anchors.map(([id, label]) => <li><a href={`${home}#${id}`}>{label}</a></li>)}
-  </ul>
+  <div class="mnav" id="mnav" hidden>
+    <ul>
+      {anchors.map(([id, label]) => <li><a href={`${home}#${id}`}>{label}</a></li>)}
+    </ul>
+    <div class="mx">
+      <a class="lang" href={altHref} hreflang={other} lang={other}>{d.nav.otherLangLabel}</a>
+      <ThemeToggle lang={lang} />
+    </div>
+  </div>
 </header>
 
 <script>
@@ -116,12 +122,18 @@ const other = otherLang(lang);
     animation: drop .22s var(--ease);
   }
   .mnav[hidden] { display: none; }
-  .mnav a {
+  .mnav li a {
     display: block; padding: 13px 0; font-size: 15px;
     color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line);
   }
   .mnav li:last-child a { border-bottom: 0; }
   .mnav a:hover, .mnav a:focus-visible { color: var(--amber-ink); }
+  .thw { display: inline-flex; }
+  .mx {
+    display: none; justify-content: space-between; align-items: center;
+    margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--line);
+  }
+  .mx .lang { font-size: 14px; color: var(--muted); text-decoration: none; }
   @keyframes drop { from { opacity: 0; transform: translateY(-6px); } }
   @media (prefers-reduced-motion: reduce) {
     .mnav { animation: none; }
@@ -136,5 +148,8 @@ const other = otherLang(lang);
   }
   @media (max-width: 600px) {
     nav { padding-block: 14px; }
+    /* En celular la barra queda en nombre, disponibilidad y menú; idioma y tema pasan al panel. */
+    :global(html.js) .ln, :global(html.js) .thw { display: none; }
+    .mx { display: flex; }
   }
 </style>
