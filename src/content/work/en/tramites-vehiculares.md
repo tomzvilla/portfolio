@@ -7,7 +7,16 @@ role: "Full stack · team of 3"
 stack: ["Next.js", "TypeScript"]
 problem: "Offices that charge and reconcile by hand, with no trace of who did what."
 summary: "Portal with cashier, receipts and AI-assisted bank reconciliation; everything audited. I built the audit, the cashier and the exceptions queue."
-confidential: true
+confidential: false
+images:
+  - src: "../../../assets/work/tramites-vehiculares/collage.png"
+    alt: "Portal screens with sample data: bank reconciliation, cashier, audit log and receipts"
+  - src: "../../../assets/work/tramites-vehiculares/caja.png"
+    alt: "Cashier: pending receipts to collect, the open till and the shift's movements"
+  - src: "../../../assets/work/tramites-vehiculares/conciliacion.png"
+    alt: "Reconciliation exceptions queue: each unresolved payment with the AI suggestion and its confidence"
+  - src: "../../../assets/work/tramites-vehiculares/auditoria.png"
+    alt: "Audit log: who did what, when, on which resource and with what outcome"
 ---
 
 ## Context

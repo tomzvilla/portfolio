@@ -7,7 +7,16 @@ role: "Full stack · equipo de 3"
 stack: ["Next.js", "TypeScript"]
 problem: "Oficinas que cobran y concilian a mano, sin rastro de quién hizo qué."
 summary: "Portal con caja, recibos y conciliación bancaria asistida por IA; auditoría de todo. Hice auditoría, caja y la cola de excepciones."
-confidential: true
+confidential: false
+images:
+  - src: "../../../assets/work/tramites-vehiculares/collage.png"
+    alt: "Pantallas del portal con datos de ejemplo: conciliación bancaria, caja, auditoría y recibos"
+  - src: "../../../assets/work/tramites-vehiculares/caja.png"
+    alt: "Caja: recibos pendientes para cobrar, estado de la caja abierta y movimientos del turno"
+  - src: "../../../assets/work/tramites-vehiculares/conciliacion.png"
+    alt: "Cola de excepciones de la conciliación: cada pago sin resolver con la sugerencia de la IA y su nivel de confianza"
+  - src: "../../../assets/work/tramites-vehiculares/auditoria.png"
+    alt: "Registro de auditoría: quién hizo qué, cuándo, sobre qué recurso y con qué resultado"
 ---
 
 ## Contexto

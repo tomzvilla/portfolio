@@ -3,7 +3,7 @@ import { WORK_SLUGS } from '../../src/data/graph';
 import { exists, page, text } from './helpers';
 
 const SITE = 'https://tomzv.com.ar';
-const CONFIDENTIAL = ['chatbots-eval', 'tramites-vehiculares', 'validacion-infracciones'];
+const CONFIDENTIAL = ['chatbots-eval', 'validacion-infracciones'];
 
 describe('páginas de proyecto', () => {
   it('existen las 8 en cada idioma', () => {
@@ -55,6 +55,14 @@ describe('páginas de proyecto', () => {
     const main = page('/trabajo/hunters-gallery/').querySelector('main')!;
     expect(main.querySelectorAll('.gallery img')).toHaveLength(4);
     expect(main.querySelector('.links a')?.getAttribute('href')).toBe('https://huntersgallery.com.ar');
+  });
+
+  it('Trámites vehiculares: collage + 3 capturas con texto alternativo y sin links', () => {
+    const main = page('/trabajo/tramites-vehiculares/').querySelector('main')!;
+    const imgs = main.querySelectorAll('.gallery img');
+    expect(imgs).toHaveLength(4);
+    imgs.forEach((i) => expect(i.getAttribute('alt')).toBeTruthy());
+    expect(main.querySelector('.links')).toBeNull();
   });
 
   it('anterior y siguiente respetan el orden y no dan la vuelta', () => {
