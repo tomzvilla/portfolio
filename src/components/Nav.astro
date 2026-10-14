@@ -1,0 +1,65 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import { AUTHOR } from '../config';
+import type { Lang } from '../i18n/types';
+import { homePath, otherLang, t } from '../i18n/utils';
+
+interface Props { lang: Lang; altHref: string }
+const { lang, altHref } = Astro.props;
+const d = t(lang);
+const home = homePath(lang);
+const anchors = [
+  [d.ids.home, d.nav.home],
+  [d.ids.services, d.nav.services],
+  [d.ids.work, d.nav.work],
+  [d.ids.about, d.nav.about],
+  [d.ids.contact, d.nav.contact],
+] as const;
+const other = otherLang(lang);
+---
+<header class="top">
+  <nav aria-label={d.nav.label}>
+    <a class="brand" href={`${home}#${d.ids.home}`}>{AUTHOR}</a>
+    <div class="ln">
+      <ul class="anchors">
+        {anchors.map(([id, label]) => <li><a href={`${home}#${id}`}>{label}</a></li>)}
+      </ul>
+      <a class="lang" href={altHref} hreflang={other} lang={other} aria-label={d.nav.otherLangLabel}>{d.nav.otherLang}</a>
+    </div>
+    <div class="rt">
+      <span class="av"><i aria-hidden="true"></i>{d.nav.available}</span>
+      <ThemeToggle lang={lang} />
+    </div>
+  </nav>
+</header>
+
+<style>
+  .top { position: sticky; top: 0; z-index: 10; }
+  nav {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 18px 48px; font-size: 13px; color: var(--muted);
+    background: var(--navbg); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { color: var(--strong); font-weight: 500; font-size: 14px; text-decoration: none; }
+  .ln { display: flex; align-items: center; gap: 24px; }
+  .anchors { display: flex; gap: 24px; }
+  .ln a { position: relative; text-decoration: none; transition: color .2s; }
+  .ln a::after {
+    content: ''; position: absolute; left: 0; right: 100%; bottom: -4px; height: 1px;
+    background: var(--amber); transition: right .25s;
+  }
+  .ln a:hover { color: var(--strong); }
+  .ln a:hover::after { right: 0; }
+  .rt { display: flex; align-items: center; }
+  .av { display: inline-flex; align-items: center; gap: 8px; color: var(--green); font-size: 12px; }
+  .av i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); position: relative; }
+  .av i::after {
+    content: ''; position: absolute; inset: -4px; border-radius: 50%;
+    border: 1px solid var(--green); animation: ping 2s ease-out infinite;
+  }
+  @media (max-width: 600px) {
+    nav { padding: 14px 20px; }
+    .anchors { display: none; }
+  }
+</style>
