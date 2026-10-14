@@ -14,7 +14,7 @@ describe('sección Trabajo', () => {
 
   it('cada fila muestra el problema en negrita', () => {
     const first = page('/').querySelector('.work a.row')!;
-    expect(text(first.querySelector('.d b'))).toBe('Una startup de IA necesitaba medir si sus asistentes responden bien.');
+    expect(text(first.querySelector('.d b'))).toBe('Empresas que ponen agentes de IA frente a sus clientes sin saber cómo pueden fallar.');
     expect(text(first.querySelector('.t small'))).toBe('Startup de IA · Europa');
   });
 

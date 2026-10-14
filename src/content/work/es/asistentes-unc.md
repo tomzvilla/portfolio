@@ -1,6 +1,6 @@
 ---
 title: "Asistentes para la UNC"
-client: "Universidad Nacional de Córdoba · PSI"
+client: "Prosecretaría de Informática · UNC"
 period: "2025"
 order: 2
 role: "IA · Backend"
@@ -12,7 +12,7 @@ confidential: false
 
 ## Contexto
 
-Los sistemas de la Universidad Nacional de Córdoba reciben miles de consultas repetidas de estudiantes sobre cuentas, accesos y trámites. Las respuestas ya existen, repartidas en manuales y preguntas frecuentes.
+La Prosecretaría de Informática de la Universidad Nacional de Córdoba recibe miles de consultas repetidas de estudiantes sobre cuentas, accesos y trámites. Las respuestas ya existen, repartidas en manuales y preguntas frecuentes.
 
 ## Qué construí
 
@@ -24,4 +24,4 @@ Python y LangGraph, sobre modelos de lenguaje con recuperación de documentos (R
 
 ## Resultado
 
-Respuestas que salen de fuentes oficiales y un asistente que sabe cuándo no sabe. Son sistemas internos de la universidad: no muestro capturas.
+Respuestas que salen de fuentes oficiales y un asistente que sabe cuándo no sabe.

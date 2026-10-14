@@ -1,6 +1,6 @@
 ---
 title: "Trámites vehiculares"
-client: "Colombia · confidencial"
+client: "Colombia"
 period: "2026"
 order: 3
 role: "Full stack · equipo de 3"
@@ -24,4 +24,4 @@ Next.js y TypeScript, con modelos de lenguaje para sugerir la conciliación.
 
 ## Resultado
 
-Cada cobro y cada cambio queda registrado con su responsable. Proyecto confidencial: sin nombres ni capturas.
+Cada cobro y cada cambio queda registrado con su responsable.

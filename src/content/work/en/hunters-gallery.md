@@ -1,11 +1,11 @@
 ---
 title: "Hunter's Gallery"
-client: "Gun shop · Córdoba"
+client: "Sporting goods store · Córdoba"
 period: "2024 → now"
 order: 5
 role: "Whole stack · solo"
 stack: ["Next.js", "Node", "MongoDB"]
-problem: "A gun shop that sold through a personal WhatsApp without recording anything."
+problem: "A shop that sold through a personal WhatsApp without recording anything."
 summary: "Today it has a catalog, internal management, invoicing with ARCA and an assistant that drafts replies for a human to approve."
 confidential: false
 links:
@@ -24,7 +24,7 @@ images:
 
 ## Context
 
-Hunter's Gallery is a gun shop in Córdoba that sold through a personal WhatsApp, without recording anything.
+Hunter's Gallery is a sporting goods store in Córdoba that sold through a personal WhatsApp, without recording anything.
 
 ## What I built
 

@@ -28,7 +28,7 @@ describe('home completa', () => {
   it('sobre mí: dos párrafos y la ficha', () => {
     const about = page('/').querySelector('#sobre-mi')!;
     expect(about.querySelectorAll('p.rv')).toHaveLength(2);
-    expect(text(about.querySelector('b'))).toBe('UTN Córdoba');
+    expect(text(about.querySelector('b'))).toBe('UTN FRC');
     expect(about.querySelectorAll('dt').map(text)).toEqual(['FORMACIÓN', 'PREMIO', 'IDIOMAS', 'CÓMO TRABAJO', 'UBICACIÓN']);
   });
 

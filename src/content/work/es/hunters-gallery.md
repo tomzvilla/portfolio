@@ -1,11 +1,11 @@
 ---
 title: "Hunter's Gallery"
-client: "Armería · Córdoba"
+client: "Tienda de deportes · Córdoba"
 period: "2024 → hoy"
 order: 5
 role: "Todo el stack · solo"
 stack: ["Next.js", "Node", "MongoDB"]
-problem: "Una armería que vendía por un WhatsApp personal sin registrar nada."
+problem: "Una tienda que vendía por un WhatsApp personal sin registrar nada."
 summary: "Hoy tiene catálogo, gestión interna, facturación con ARCA y un asistente que redacta respuestas para que un humano apruebe."
 confidential: false
 links:
@@ -13,7 +13,7 @@ links:
     href: "https://huntersgallery.com.ar"
 images:
   - src: "../../../assets/work/hunters-gallery/collage.png"
-    alt: "Pantallas del sitio público de Hunter's Gallery: portada, catálogo, ficha de producto y guía para la primera arma"
+    alt: "Pantallas del sitio público de Hunter's Gallery: portada, catálogo, ficha de producto y guía de compra para principiantes"
   - src: "../../../assets/work/hunters-gallery/inicio.png"
     alt: "Portada del sitio público de Hunter's Gallery"
   - src: "../../../assets/work/hunters-gallery/catalogo.png"
@@ -24,7 +24,7 @@ images:
 
 ## Contexto
 
-Hunter's Gallery es una armería de Córdoba que vendía por un WhatsApp personal, sin registrar nada.
+Hunter's Gallery es una tienda de deportes de Córdoba que vendía por un WhatsApp personal, sin registrar nada.
 
 ## Qué construí
 

@@ -5,14 +5,14 @@ period: "2024 → 25"
 order: 6
 role: "Full stack"
 stack: []
-problem: "Una startup con una plataforma que analiza reuniones."
-summary: "Desarrollo full stack del producto."
+problem: "Reuniones donde lo que se decide no queda escrito en ningún lado."
+summary: "Desarrollo full stack de Manent, un servicio de inteligencia de reuniones pensado para el italiano."
 confidential: false
 ---
 
 ## Contexto
 
-LitusAI es una startup que desarrolla Manent, una plataforma que analiza reuniones.
+LitusAI es una startup italiana que desarrolla Manent, un servicio de inteligencia de reuniones pensado para el italiano. Se suma a las reuniones de Google Meet, Microsoft Teams y Zoom, las graba, las transcribe y las resume, detecta las tareas pendientes y responde preguntas sobre lo que se habló.
 
 ## Qué construí
 
@@ -24,4 +24,4 @@ TypeScript, React y Node.
 
 ## Resultado
 
-No muestro capturas ni detalles internos: el producto es de LitusAI.
+Un asistente que, además de resumir, permite generar mails, documentos y resúmenes a partir de una o varias reuniones.

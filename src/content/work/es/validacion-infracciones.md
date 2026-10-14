@@ -1,6 +1,6 @@
 ---
 title: "Validación de infracciones"
-client: "Colombia · confidencial"
+client: "Colombia"
 period: "2025 → 26"
 order: 4
 role: "Frontend · equipo de 3"
@@ -24,4 +24,4 @@ React en el frontend, sobre una API en NestJS.
 
 ## Resultado
 
-Un portal donde cada persona ve y valida lo que le corresponde según su rol. Proyecto confidencial: sin nombres ni capturas.
+Un portal donde cada persona ve y valida lo que le corresponde según su rol.

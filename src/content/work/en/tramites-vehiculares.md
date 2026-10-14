@@ -1,6 +1,6 @@
 ---
 title: "Vehicle registration services"
-client: "Colombia · confidential"
+client: "Colombia"
 period: "2026"
 order: 3
 role: "Full stack · team of 3"
@@ -24,4 +24,4 @@ Next.js and TypeScript, with language models to suggest reconciliations.
 
 ## Outcome
 
-Every payment and every change is recorded along with who made it. Confidential project: no names, no screenshots.
+Every payment and every change is recorded along with who made it.

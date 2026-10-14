@@ -35,7 +35,7 @@ describe('mapa de servicios', () => {
   it('el panel de un proyecto usa el texto de su página', () => {
     const p1 = map.querySelector('[data-panel="p1"]')!;
     expect(text(p1.querySelector('.p'))).toBe(
-      'Una startup de IA necesitaba medir si sus asistentes responden bien. Desarrollo full stack de la plataforma que lo hace: interfaz, API y modelo de datos.',
+      'Empresas que ponen agentes de IA frente a sus clientes sin saber cómo pueden fallar. Desarrollo full stack de una plataforma que prueba agentes de IA de forma automática y reporta cada falla.',
     );
     expect(p1.querySelector('.cta a')?.getAttribute('href')).toBe('/trabajo/chatbots-eval/');
   });

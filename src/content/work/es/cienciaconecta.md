@@ -29,7 +29,7 @@ La Feria de Ciencia y Tecnología de la provincia de Córdoba se gestionaba con 
 
 ## Qué construí
 
-Fue nuestro proyecto final de Ingeniería en Sistemas en la UTN Córdoba. Lideré un equipo de cuatro y me encargué del frontend: autenticación y autorización por roles, sesiones y gestión de usuarios. El sistema cubre la inscripción de proyectos, la gestión de la feria y de los evaluadores, notificaciones, mails y la evaluación. Relevé los requerimientos en reuniones con los dos ministerios y los traduje a historias de usuario.
+Fue nuestro proyecto final de Ingeniería en Sistemas en la UTN FRC. Lideré un equipo de cuatro y me encargué del frontend: autenticación y autorización por roles, sesiones y gestión de usuarios. El sistema cubre la inscripción de proyectos, la gestión de la feria y de los evaluadores, notificaciones, mails y la evaluación. Relevé los requerimientos en reuniones con los dos ministerios y los traduje a historias de usuario.
 
 ## Con qué
 

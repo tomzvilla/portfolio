@@ -1,6 +1,6 @@
 ---
 title: "Assistants for the UNC"
-client: "National University of Córdoba · PSI"
+client: "IT Office · UNC"
 period: "2025"
 order: 2
 role: "AI · Backend"
@@ -12,7 +12,7 @@ confidential: false
 
 ## Context
 
-The systems of the National University of Córdoba get thousands of repeated questions from students about accounts, access and procedures. The answers already exist, spread across manuals and FAQs.
+The IT Office of the National University of Córdoba gets thousands of repeated questions from students about accounts, access and procedures. The answers already exist, spread across manuals and FAQs.
 
 ## What I built
 
@@ -24,4 +24,4 @@ Python and LangGraph, on top of language models with document retrieval (RAG).
 
 ## Outcome
 
-Answers that come from official sources, and an assistant that knows when it doesn't know. These are internal university systems, so I don't show screenshots.
+Answers that come from official sources, and an assistant that knows when it doesn't know.

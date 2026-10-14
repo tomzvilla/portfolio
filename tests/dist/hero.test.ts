@@ -25,7 +25,7 @@ describe('hero', () => {
 
   it('tres datos y un adorno oculto para lectores de pantalla', () => {
     const es = page('/');
-    expect(es.querySelectorAll('.hero .now dt').map(text)).toEqual(['AHORA', 'DESDE 2023', 'PROYECTOS PROPIOS']);
+    expect(es.querySelectorAll('.hero .now dt').map(text)).toEqual(['DESDE 2023', 'EN PARALELO', 'PROYECTOS PROPIOS']);
     const vec = es.querySelector('.vec')!;
     expect(vec.getAttribute('aria-hidden')).toBe('true');
     expect(vec.querySelectorAll('circle')).toHaveLength(11);

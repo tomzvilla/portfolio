@@ -29,7 +29,7 @@ The Science and Technology Fair of the province of Córdoba was run on paper and
 
 ## What I built
 
-It was our final project for the Systems Engineering degree at UTN Córdoba. I led a team of four and handled the frontend: role-based authentication and authorization, sessions and user management. The system covers project registration, fair and evaluator management, notifications, email and evaluation. I gathered the requirements in meetings with both ministries and turned them into user stories.
+It was our final project for the Systems Engineering degree at UTN FRC. I led a team of four and handled the frontend: role-based authentication and authorization, sessions and user management. The system covers project registration, fair and evaluator management, notifications, email and evaluation. I gathered the requirements in meetings with both ministries and turned them into user stories.
 
 ## Built with
 

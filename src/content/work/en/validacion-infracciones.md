@@ -1,6 +1,6 @@
 ---
 title: "Traffic violation validation"
-client: "Colombia · confidential"
+client: "Colombia"
 period: "2025 → 26"
 order: 4
 role: "Frontend · team of 3"
@@ -24,4 +24,4 @@ React on the frontend, on top of a NestJS API.
 
 ## Outcome
 
-A portal where each person sees and validates what their role calls for. Confidential project: no names, no screenshots.
+A portal where each person sees and validates what their role calls for.
