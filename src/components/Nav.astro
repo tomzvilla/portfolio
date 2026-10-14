@@ -58,8 +58,10 @@ const other = otherLang(lang);
     content: ''; position: absolute; inset: -4px; border-radius: 50%;
     border: 1px solid var(--green); animation: ping 2s ease-out infinite;
   }
+  @media (max-width: 860px) {
+    .anchors { display: none; }
+  }
   @media (max-width: 600px) {
     nav { padding: 14px 20px; }
-    .anchors { display: none; }
   }
 </style>

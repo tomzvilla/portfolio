@@ -52,10 +52,12 @@ const entries = await getWork(lang);
   .r { font-size: 11px; color: var(--muted); line-height: 1.6; text-transform: uppercase; }
   .go { font-size: 11px; color: var(--faint); text-align: right; transition: color .2s, transform .25s; }
 
-  @media (max-width: 600px) {
-    .work { padding: 56px 20px 40px; }
+  @media (max-width: 900px) {
     .row { grid-template-columns: 1fr; gap: 6px; padding: 18px 0; }
     .row:hover { transform: none; }
     .go { text-align: left; }
+  }
+  @media (max-width: 600px) {
+    .work { padding: 56px 20px 40px; }
   }
 </style>
