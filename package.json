@@ -12,7 +12,9 @@
     "check": "astro check",
     "og": "node scripts/make-og.mjs",
     "test": "vitest run tests/unit",
-    "test:dist": "astro build && vitest run tests/dist"
+    "test:dist": "astro build && vitest run tests/dist",
+    "check:names": "node scripts/check-names.mjs dist && node scripts/check-names.mjs src && node scripts/check-names.mjs public",
+    "verify": "npm run check && npm test && npm run test:dist && npm run check:names"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
