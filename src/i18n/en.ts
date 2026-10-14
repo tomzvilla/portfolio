@@ -45,7 +45,6 @@ export const en: Dict = {
     colServices: 'What I offer',
     colProjects: "What I've built · 2026 → 2023",
     colTechs: 'With what',
-    hint: 'CLICK TO PIN · HOVER TO PREVIEW',
     caseCta: 'Tell me about your case',
     projectKicker: 'PROJECT',
     projectCta: 'See the project',
@@ -83,7 +82,7 @@ export const en: Dict = {
       },
       s3: {
         title: 'A custom system',
-        desc: 'Built around how your team works, with per-person permissions and a history of every change. Goodbye spreadsheets.',
+        desc: 'Built around your team, with per-person permissions and a history of every change.',
         node: 'Custom system',
         panel: {
           k: 'C · CUSTOM SYSTEM',

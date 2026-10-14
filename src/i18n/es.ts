@@ -45,7 +45,6 @@ export const es: Dict = {
     colServices: 'Lo que ofrezco',
     colProjects: 'Lo que ya hice · 2026 → 2023',
     colTechs: 'Con qué',
-    hint: 'CLICK FIJA · HOVER PREVISUALIZA',
     caseCta: 'Contame tu caso',
     projectKicker: 'PROYECTO',
     projectCta: 'Ver el proyecto',
@@ -83,7 +82,7 @@ export const es: Dict = {
       },
       s3: {
         title: 'Un sistema a medida',
-        desc: 'Hecho a la medida de cómo trabaja tu equipo, con permisos por persona e historial de cada cambio. Adiós planillas.',
+        desc: 'A la medida de tu equipo, con permisos por persona y el historial de cada cambio.',
         node: 'Sistema a medida',
         panel: {
           k: 'C · SISTEMA A MEDIDA',

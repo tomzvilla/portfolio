@@ -103,7 +103,6 @@ const entryFor = (slug: string) => {
       ))}
     </div>
   </div>
-  <p class="hint mono" aria-hidden="true">{s.hint}</p>
 </section>
 
 <script>
@@ -244,7 +243,7 @@ const entryFor = (slug: string) => {
 
   .svcs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 36px; }
   .svc {
-    position: relative; overflow: hidden; display: block;
+    position: relative; overflow: hidden; display: flex; flex-direction: column;
     padding: 18px 18px 16px; border: 1px solid var(--line3); background: var(--surface);
     transition: border-color .25s, background .25s, transform .25s;
   }
@@ -258,7 +257,7 @@ const entryFor = (slug: string) => {
   .svc .t { display: block; padding-right: 18px; font-size: 17px; color: var(--strong); font-weight: 500; }
   .svc .d { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); line-height: 1.45; font-weight: 300; }
   .svc.on .d { color: var(--text2); }
-  .svc .c { display: block; margin-top: 12px; font-size: 11px; color: var(--amber-ink); }
+  .svc .c { display: block; margin-top: auto; padding-top: 12px; font-size: 11px; color: var(--amber-ink); }
   .svc .num { position: absolute; right: 14px; top: 14px; font-size: 11px; color: var(--faint); transition: color .25s; }
   .svc.on .num { color: var(--amber-ink); }
 
@@ -304,11 +303,13 @@ const entryFor = (slug: string) => {
   :global(.js) .graph:global(.settled) .nd.hi { transform: translateX(3px); }
   :global(.js) .graph:global(.settled) .nd.dim { opacity: .3; }
 
+  /* todos los contenidos comparten celda: el panel mide lo que el más alto y no salta al cambiar */
   .panel {
-    position: relative; overflow: hidden; display: flex; flex-direction: column;
+    position: relative; overflow: hidden; display: grid;
     padding: 22px; border: 1px solid var(--line3); background: var(--surface);
   }
-  .inner { display: flex; flex-direction: column; flex: 1; transition: opacity .25s, transform .25s; }
+  .inner { grid-area: 1 / 1; display: flex; flex-direction: column; transition: opacity .25s, transform .25s; }
+  .inner[hidden] { display: flex !important; visibility: hidden; }
   .panel:global(.out) .inner { opacity: 0; transform: translateY(6px); }
   .inner .k { margin-bottom: 10px; font-size: 11px; letter-spacing: .08em; color: var(--amber-ink); }
   .inner h3 { font-size: 21px; color: var(--strong); font-weight: 500; letter-spacing: -.01em; line-height: 1.2; }
@@ -328,7 +329,6 @@ const entryFor = (slug: string) => {
   .cta em { font-style: normal; transition: transform .25s; }
   .cta a:hover em { transform: translateX(4px); }
 
-  .hint { margin-top: 14px; font-size: 11px; color: var(--faint); }
 
   /* layout en lista: sin columna de servicios ni líneas (debe coincidir con matchMedia en el script) */
   @media (max-width: 1060px) {
@@ -347,12 +347,11 @@ const entryFor = (slug: string) => {
     .techcol .colh { width: 100%; }
     :global(.js) .graph:global(.settled) .nd.hi { transform: none; }
     .nd.dim, :global(.js) .graph:global(.settled) .nd.dim { opacity: .35; }
-    .hint { display: none; }
   }
   @media (max-width: 600px) {
     .map { padding-block: 56px; }
     .svc .t { font-size: 15px; line-height: 1.25; }
-    .svc .c { margin-top: 5px; font-size: 10px; }
+    .svc .c { padding-top: 5px; font-size: 10px; }
     .graph { padding: 16px; }
   }
   @media (prefers-reduced-motion: reduce) {
