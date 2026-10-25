@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { WORK_SLUGS } from '../../src/data/graph';
 import { exists, page, text } from './helpers';
 
-const SITE = 'https://tomzv.com.ar';
+const SITE = 'https://tomasvillarreal.com.ar';
 const CONFIDENTIAL = ['chatbots-eval', 'validacion-infracciones'];
 
 describe('páginas de proyecto', () => {
