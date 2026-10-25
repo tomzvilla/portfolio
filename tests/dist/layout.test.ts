@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { cssOf, page, text } from './helpers';
 
-const SITE = 'https://tomzv.com.ar';
+const SITE = 'https://tomasvillarreal.com.ar';
 
 describe('<head>', () => {
   it('el primer script es el inline de tema y está en <head>', () => {
